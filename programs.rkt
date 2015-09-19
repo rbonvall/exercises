@@ -50,6 +50,13 @@
     [(eq? old (car lat)) (cons new (cdr lat))]
     [else                (cons (car lat)
                                (subst new old (cdr lat)))]))
+(define (subst2 new o1 o2 lat)
+  (cond
+    [(null? lat)         '()]
+    [(eq? o1 (car lat)) (cons new (cdr lat))]
+    [(eq? o2 (car lat)) (cons new (cdr lat))]
+    [else                (cons (car lat)
+                               (subst2 new o1 o2 (cdr lat)))]))
 
 (define (multirember a lat)
   (cond

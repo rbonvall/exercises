@@ -140,6 +140,8 @@
     [(< n m) 0]
     [else       (add1 (÷ (- n m) m))]))
 
+(define (↑ n m) 0)
+
 (define (length lat)
   (cond
     [(null? lat) 0]

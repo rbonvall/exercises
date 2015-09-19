@@ -65,6 +65,10 @@
     [else              (cons (car lat)
                              (multirember a (cdr lat)))]))
 
+(define (multiinsertR new old lat) '())
+(define (multiinsertL new old lat) '())
+(define (multisubst new old lat) '())
+
 (define (plus a b)
   (cond
     [(zero? a) b]

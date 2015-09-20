@@ -249,3 +249,16 @@
   (cond
     [(atom? (car l)) (car l)]
     [else            (leftmost (car l))]))
+
+(define (eqlist? l1 l2)
+  (or (and (null? l1)
+           (null? l2))
+      (and (not (null? l1))
+           (not (null? l2))
+           (or (and (atom? (car l1))
+                    (atom? (car l2))
+                    (eqan?   (car l1) (car l2)))
+               (and (list? (car l1))
+                    (list? (car l2))
+                    (eqlist? (car l1) (car l2))))
+           (eqlist? (cdr l1) (cdr l2)))))

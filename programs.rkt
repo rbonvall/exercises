@@ -289,3 +289,9 @@
     [(or  (null? l1) (null? l2)) #f]
     [else (and (equal?         (car l1) (car l2))
                (simple-eqlist? (cdr l1) (cdr l2)))]))
+
+(define (numbered? aexp)
+  (cond
+    [(atom? aexp) (number? aexp)]
+    [else         (and (numbered? (car aexp))
+                       (numbered? (car (cdr (cdr aexp)))))]))

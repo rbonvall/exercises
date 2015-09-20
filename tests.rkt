@@ -208,6 +208,10 @@
   (check-false (simple-eqlist? '(beef ((sausage)) (and (soda)))
                                '(beef ((salami))  (and (soda)))))
   (check-true  (simple-eqlist? '(beef ((sausage)) (and (soda)))
-                               '(beef ((sausage)) (and (soda)))))
+                               '(beef ((sausage)) (and (soda))))))
 
+(test-case "Chapter 6"
+  (check-true  (numbered? 1))
+  (check-true  (numbered? '(3 + (4 ↑ 5))))
+  (check-false (numbered? '(2 × sausage)))
 )

@@ -172,5 +172,9 @@
                   could pecker chuck wood))
   (check-true  (member* 'chips '((potato) (chips ((with) fish) (chips)))))
   (check-false (member* 'abcde '((potato) (chips ((with) fish) (chips)))))
+  (check-equal? (leftmost '((potato) (chips ((with) fish) (chips))))
+                'potato)
+  (check-equal? (leftmost '(((hot) (tuna (and))) cheese))
+                'hot)
 
 )

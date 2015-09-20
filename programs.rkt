@@ -244,3 +244,8 @@
                          (member* a (cdr l)))]
     [(eq? (car l) a) #t]
     [else            (member* a (cdr l))]))
+
+(define (leftmost l)
+  (cond
+    [(atom? (car l)) (car l)]
+    [else            (leftmost (car l))]))

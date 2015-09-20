@@ -176,6 +176,7 @@
                 'potato)
   (check-equal? (leftmost '(((hot) (tuna (and))) cheese))
                 'hot)
+
   (check-true  (eqlist? '(strawberry ice cream)
                         '(strawberry ice cream)))
   (check-false (eqlist? '(strawberry ice cream)
@@ -186,6 +187,7 @@
                         '(beef ((salami))  (and (soda)))))
   (check-true  (eqlist? '(beef ((sausage)) (and (soda)))
                         '(beef ((sausage)) (and (soda)))))
+
   (check-true  (book-eqlist? '(strawberry ice cream)
                              '(strawberry ice cream)))
   (check-false (book-eqlist? '(strawberry ice cream)
@@ -196,5 +198,16 @@
                              '(beef ((salami))  (and (soda)))))
   (check-true  (book-eqlist? '(beef ((sausage)) (and (soda)))
                              '(beef ((sausage)) (and (soda)))))
+
+  (check-true  (simple-eqlist? '(strawberry ice cream)
+                               '(strawberry ice cream)))
+  (check-false (simple-eqlist? '(strawberry ice cream)
+                               '(strawberry cream ice)))
+  (check-false (simple-eqlist? '(banana ((split)))
+                               '((banana) (split))))
+  (check-false (simple-eqlist? '(beef ((sausage)) (and (soda)))
+                               '(beef ((salami))  (and (soda)))))
+  (check-true  (simple-eqlist? '(beef ((sausage)) (and (soda)))
+                               '(beef ((sausage)) (and (soda)))))
 
 )

@@ -136,5 +136,13 @@
                   (((chuck roast)))
                   (if (a) ((wood chuck roast)))
                   could chuck roast wood))
+  (check-equal? (occur* 'banana '((banana)
+                                  (split ((((banana ice)))
+                                          (cream (banana))
+                                          sherbet))
+                                  (banana)
+                                  (bread)
+                                  (banana brandy)))
+                5)
 
 )

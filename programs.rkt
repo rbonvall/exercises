@@ -208,3 +208,11 @@
     [else              (cons (car l)
                              (insertR* new old (cdr l)))]))
 
+(define (occur* a l)
+  (cond
+    [(null? l) 0]
+    [(list? (car l)) (plus (occur* a (car l))
+                           (occur* a (cdr l)))]
+    [(eq? (car l) a) (add1 (occur* a (cdr l)))]
+    [else            (occur* a (cdr l))]))
+

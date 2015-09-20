@@ -296,12 +296,15 @@
     [else         (and (numbered? (car aexp))
                        (numbered? (car (cdr (cdr aexp)))))]))
 
+(define 1st-sub-exp car)
+(define 2nd-sub-exp (compose car cdr cdr))
+
 (define (value nexp)
   (cond
     [(atom? nexp)      nexp]
-    [(eq? (car (cdr nexp)) '+) (plus (value (car nexp))
-                                     (value (car (cdr (cdr nexp)))))]
-    [(eq? (car (cdr nexp)) '×) (×    (value (car nexp))
-                                     (value (car (cdr (cdr nexp)))))]
-    [(eq? (car (cdr nexp)) '↑) (↑    (value (car nexp))
-                                     (value (car (cdr (cdr nexp)))))]))
+    [(eq? (car (cdr nexp)) '+) (plus (value (1st-sub-exp nexp))
+                                     (value (2nd-sub-exp nexp)))]
+    [(eq? (car (cdr nexp)) '×) (×    (value (1st-sub-exp nexp))
+                                     (value (2nd-sub-exp nexp)))]
+    [(eq? (car (cdr nexp)) '↑) (↑    (value (1st-sub-exp nexp))
+                                     (value (2nd-sub-exp nexp)))]))

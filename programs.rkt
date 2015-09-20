@@ -196,3 +196,15 @@
     [(eq? (car l) a) (rember* a (cdr l))]
     [else            (cons (car l)
                            (rember* a (cdr l)))]))
+
+(define (insertR* new old l)
+  (cond
+    [(null? l) '()]
+    [(list? (car l))   (cons (insertR* new old (car l))
+                             (insertR* new old (cdr l)))]
+    [(eq? (car l) old) (cons old
+                             (cons new
+                                   (insertR* new old (cdr l))))]
+    [else              (cons (car l)
+                             (insertR* new old (cdr l)))]))
+

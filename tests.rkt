@@ -214,4 +214,7 @@
   (check-true  (numbered? 1))
   (check-true  (numbered? '(3 + (4 ↑ 5))))
   (check-false (numbered? '(2 × sausage)))
+  (check-equal? (value 13) 13)
+  (check-equal? (value '(1 + 3)) 4)
+  (check-equal? (value '(1 + (3 ↑ 4))) 82)
 )

@@ -295,3 +295,13 @@
     [(atom? aexp) (number? aexp)]
     [else         (and (numbered? (car aexp))
                        (numbered? (car (cdr (cdr aexp)))))]))
+
+(define (value nexp)
+  (cond
+    [(atom? nexp)      nexp]
+    [(eq? (car (cdr nexp)) '+) (plus (value (car nexp))
+                                     (value (car (cdr (cdr nexp)))))]
+    [(eq? (car (cdr nexp)) '×) (×    (value (car nexp))
+                                     (value (car (cdr (cdr nexp)))))]
+    [(eq? (car (cdr nexp)) '↑) (↑    (value (car nexp))
+                                     (value (car (cdr (cdr nexp)))))]))

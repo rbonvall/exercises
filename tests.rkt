@@ -117,5 +117,11 @@
   (check-false  (one? 0))
   (check-true   (one? 1))
   (check-false  (one? 2))
-  (check-equal? (one?-based-rempick 3 '(lemon meringue salty pie)) '(lemon meringue pie))
+  (check-equal? (one?-based-rempick 3 '(lemon meringue salty pie)) '(lemon meringue pie)))
+
+(test-case "Chapter 5"
+  (check-equal? (rember* 'cup '((coffee) cup ((tea) cup) (and (hick)) cup))
+                              '((coffee)     ((tea)    ) (and (hick))    ))
+  (check-equal? (rember* 'sauce '(((tomato sauce)) ((bean) sauce) (and ((flying)) sauce)))
+                                '(((tomato      )) ((bean)      ) (and ((flying))      )))
 )

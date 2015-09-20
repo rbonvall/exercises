@@ -187,3 +187,12 @@
     [(one? n) (cdr lat)]
     [else     (cons (car lat)
                     (one?-based-rempick (sub1 n) (cdr lat)))]))
+
+(define (rember* a l)
+  (cond
+    [(null? l)       '()]
+    [(list? (car l)) (cons (rember* a (car l))
+                           (rember* a (cdr l)))]
+    [(eq? (car l) a) (rember* a (cdr l))]
+    [else            (cons (car l)
+                           (rember* a (cdr l)))]))

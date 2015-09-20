@@ -172,3 +172,18 @@
 (define (eqan? a1 a2)
   (or (and      (number? a1)       (number? a2)  (=   a1 a2))
       (and (not (number? a1)) (not (number? a2)) (eq? a1 a2))))
+
+(define (occur a lat)
+  (cond
+    [(null? lat)         0]
+    [(eqan? a (car lat)) (add1 (occur a (cdr lat)))]
+    [else                (occur a (cdr lat))]))
+
+(define (one? n)
+  (zero? (sub1 n)))
+
+(define (one?-based-rempick n lat)
+  (cond
+    [(one? n) (cdr lat)]
+    [else     (cons (car lat)
+                    (one?-based-rempick (sub1 n) (cdr lat)))]))

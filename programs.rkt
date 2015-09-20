@@ -236,3 +236,11 @@
                                    (insertL* new old (cdr l))))]
     [else              (cons (car l)
                              (insertL* new old (cdr l)))]))
+
+(define (member* a l)
+  (cond
+    [(null? l)       #f]
+    [(list? (car l)) (or (member* a (car l))
+                         (member* a (cdr l)))]
+    [(eq? (car l) a) #t]
+    [else            (member* a (cdr l))]))

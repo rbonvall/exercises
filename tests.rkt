@@ -170,5 +170,7 @@
                   (((pecker chuck)))
                   (if (a) ((wood pecker chuck)))
                   could pecker chuck wood))
+  (check-true  (member* 'chips '((potato) (chips ((with) fish) (chips)))))
+  (check-false (member* 'abcde '((potato) (chips ((with) fish) (chips)))))
 
 )

@@ -247,4 +247,7 @@
   (check eqset? (intersect '(stewed tomatoes and macaroni)
                            '(hamburger or cheese))
                 '())
+  (check eqset? (union '(stewed tomatoes and macaroni casserole)
+                       '(macaroni and cheese))
+                '(stewed tomatoes casserole macaroni and cheese))
 )

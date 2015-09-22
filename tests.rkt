@@ -221,7 +221,8 @@
   (check-equal? (2nd-sub-exp '((3 * 4) + (5 ↑ 6))) '(5 ↑ 6)))
 
 (test-case "Chapter 7"
-  (check-false (set? '(apples peaches apples plums)))
+  (check-false (set? '(apple peaches apple plum)))
   (check-true  (set? '(apples peaches pears plums)))
   (check-true  (set? '()))
+  (check-false (set? '(apple 3 pear 4 9 apple 3 4)))
 )

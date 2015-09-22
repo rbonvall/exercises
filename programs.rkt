@@ -368,3 +368,12 @@
        (not (null? x))
        (not (null? (cdr x)))
        (null? (cdr (cdr x)))))
+
+(define (first p)
+  (car p))
+(define (second p)
+  (car (cdr p)))
+(define (third p)
+  (car (cdr (cdr p))))
+(define (build s1 s2)
+  (cons s1 (cons s2 '())))

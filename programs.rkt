@@ -308,3 +308,8 @@
                                      (value (2nd-sub-exp nexp)))]
     [(eq? (car (cdr nexp)) '↑) (↑    (value (1st-sub-exp nexp))
                                      (value (2nd-sub-exp nexp)))]))
+
+(define (set? lat)
+  (or (null? lat)
+      (and (not (member? (car lat) (cdr lat)))
+           (set? (cdr lat)))))

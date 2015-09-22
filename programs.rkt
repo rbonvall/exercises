@@ -362,3 +362,9 @@
     [(null? (cdr l-set)) (car l-set)]
     [else                (intersect (car l-set)
                                     (intersectall (cdr l-set)))]))
+
+(define (a-pair? x)
+  (and (list? x)
+       (not (null? x))
+       (not (null? (cdr x)))
+       (null? (cdr (cdr x)))))

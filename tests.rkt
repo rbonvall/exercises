@@ -233,4 +233,8 @@
                         '(5 hamburgers 2 pieces fried chicken and light duckling wings)))
   (check-false (subset? '(4 pounds of horseradish)
                         '(four pounds chicken and 5 ounces horseradish)))
+  (check-true  (eqset? '(6 large chickens with wings)
+                       '(6 chickens with large wings)))
+  (check-false (eqset? '(6 large chickens with wings)
+                       '(6 chickens without large wings)))
 )

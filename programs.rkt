@@ -332,3 +332,7 @@
   (or (null? set1)
       (and (member? (car set1) set2)
            (subset? (cdr set1) set2))))
+
+(define (eqset? set1 set2)
+  (and (subset? set1 set2)
+       (subset? set2 set1)))

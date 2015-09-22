@@ -237,4 +237,8 @@
                        '(6 chickens with large wings)))
   (check-false (eqset? '(6 large chickens with wings)
                        '(6 chickens without large wings)))
+  (check-true  (intersect? '(stewed tomatoes and macaroni)
+                           '(macaroni and cheese)))
+  (check-false (intersect? '(stewed tomatoes and macaroni)
+                           '(hamburger or cheese)))
 )

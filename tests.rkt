@@ -225,4 +225,6 @@
   (check-true  (set? '(apples peaches pears plums)))
   (check-true  (set? '()))
   (check-false (set? '(apple 3 pear 4 9 apple 3 4)))
+  (check-equal? (m-makeset '(apple peach pear peach plum apple lemon peach))
+                           '(pear plum apple lemon peach))
 )

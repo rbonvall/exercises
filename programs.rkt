@@ -313,3 +313,9 @@
   (or (null? lat)
       (and (not (member? (car lat) (cdr lat)))
            (set? (cdr lat)))))
+
+(define (m-makeset lat)
+  (cond
+    [(null? lat)                   '()]
+    [(member? (car lat) (cdr lat)) (m-makeset (cdr lat))]
+    [else                          (cons (car lat) (m-makeset (cdr lat)))]))

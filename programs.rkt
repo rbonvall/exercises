@@ -355,3 +355,10 @@
     [(member? (car set1) set2) (union (cdr set1) set2)]
     [else                      (cons (car set1)
                                      (union (cdr set1) set2))]))
+
+(define (intersectall l-set)
+  (cond
+    [(null? l-set)       '()]
+    [(null? (cdr l-set)) (car l-set)]
+    [else                (intersect (car l-set)
+                                    (intersectall (cdr l-set)))]))

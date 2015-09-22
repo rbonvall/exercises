@@ -327,3 +327,8 @@
                        (multirember (car lat) (mr-makeset (cdr lat))))]))
 
 (define makeset mr-makeset)
+
+(define (subset? set1 set2)
+  (or (null? set1)
+      (and (member? (car set1) set2)
+           (subset? (cdr set1) set2))))

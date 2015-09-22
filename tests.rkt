@@ -229,4 +229,8 @@
                            '(pear plum apple lemon peach))
   (check-equal? (mr-makeset '(apple peach pear peach plum apple lemon peach))
                             '(apple peach pear plum lemon))
+  (check-true  (subset? '(5 chicken wings)
+                        '(5 hamburgers 2 pieces fried chicken and light duckling wings)))
+  (check-false (subset? '(4 pounds of horseradish)
+                        '(four pounds chicken and 5 ounces horseradish)))
 )

@@ -429,3 +429,16 @@
                                        (cdr lat)))]
     [else                  (cons (car lat)
                                  ((insertR-f test?) new old (cdr lat)))]))
+
+(define (seqL a b c)
+  (cons a (cons b c)))
+
+(define (seqR a b c)
+  (cons b (cons a c)))
+
+(define ((insert-g seq) new old lat)
+  (cond
+    [(null? lat)         '()]
+    [(eq? old (car lat)) (seq new old (cdr lat))]
+    [else                (cons (car lat)
+                               ((insert-g seq) new old (cdr lat)))]))

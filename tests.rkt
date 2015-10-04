@@ -304,4 +304,8 @@
                                        '(a b c e d f g d h))
   (check-equal? ((insertR-f eq?) 'e 'd '(a b c d   f g d h))
                                        '(a b c d e f g d h))
+  (check-equal? ((insert-g seqL) 'e 'd '(a b c   d f g d h))
+                                       '(a b c e d f g d h))
+  (check-equal? ((insert-g seqR) 'e 'd '(a b c d   f g d h))
+                                       '(a b c d e f g d h))
 )

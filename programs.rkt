@@ -399,3 +399,17 @@
     [(test? a (car l)) (cdr l)]
     [else              (cons (car l)
                              (rember-f test? a (cdr l)))]))
+
+(define ((eq?-c a) x)
+  (eq? x a))
+
+(define eq?-salad (eq?-c 'salad))
+
+(define ((curried-rember-f test?) a l)
+  (cond
+    [(null? l)         '()]
+    [(test? a (car l)) (cdr l)]
+    [else              (cons (car l)
+                             ((curried-rember-f test?) a (cdr l)))]))
+
+(define rember-eq? (curried-rember-f eq?))

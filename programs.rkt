@@ -413,3 +413,19 @@
                              ((curried-rember-f test?) a (cdr l)))]))
 
 (define rember-eq? (curried-rember-f eq?))
+
+(define ((insertL-f test?) new old lat)
+  (cond
+    [(null? lat)           '()]
+    [(test? old (car lat)) (cons new lat)]
+    [else                  (cons (car lat)
+                                 ((insertL-f test?) new old (cdr lat)))]))
+
+(define ((insertR-f test?) new old lat)
+  (cond
+    [(null? lat)           '()]
+    [(test? old (car lat)) (cons old
+                                 (cons new
+                                       (cdr lat)))]
+    [else                  (cons (car lat)
+                                 ((insertR-f test?) new old (cdr lat)))]))

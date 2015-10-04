@@ -300,4 +300,8 @@
                 '(shrimp salad and salad))
   (check-equal? ((curried-rember-f eq?) 'eq? '(equal? eq? eqan? eqlist? eqpair?))
                 '(equal? eqan? eqlist? eqpair?))
+  (check-equal? ((insertL-f eq?) 'e 'd '(a b c   d f g d h))
+                                       '(a b c e d f g d h))
+  (check-equal? ((insertR-f eq?) 'e 'd '(a b c d   f g d h))
+                                       '(a b c d e f g d h))
 )

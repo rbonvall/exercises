@@ -470,3 +470,10 @@
     [(test? a (car lat)) ((multirember-f test?) a (cdr lat))]
     [else                (cons (car lat)
                                ((multirember-f test?) a (cdr lat)))]))
+
+(define (multiremberT test? lat)
+  (cond
+    [(null? lat)       '()]
+    [(test? (car lat)) (multiremberT test? (cdr lat))]
+    [else              (cons (car lat)
+                             (multiremberT test? (cdr lat)))]))

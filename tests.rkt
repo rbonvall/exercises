@@ -317,4 +317,6 @@
   (check-equal? (value-rewritten '(1 + (3 ↑ 4))) 82)
   (check-equal? ((multirember-f eq?) 'tuna '(shrimp salad tuna salad and tuna))
                 '(shrimp salad salad and))
+  (check-equal? (multiremberT (eq?-c 'tuna) '(shrimp salad tuna salad and tuna))
+                '(shrimp salad salad and))
 )

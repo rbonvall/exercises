@@ -274,4 +274,6 @@
   (check-false (fun? '((4 3) (4 2) (7 6) (6 2) (3 4))))
   (check-true  (fun? '((8 3) (4 2) (7 6) (6 2) (3 4))))
   (check-false (fun? '((d 4) (b 0) (b 9) (e 5) (g 4))))
+  (check-equal? (revrel '((8 a) (pumpkin pie) (got sick)))
+                '((a 8) (pie pumpkin) (sick got)))
 )

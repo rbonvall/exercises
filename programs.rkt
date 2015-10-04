@@ -392,3 +392,10 @@
 
 (define (fullfun? fun)
   (fun? (revrel fun)))
+
+(define (rember-f test? a l)
+  (cond
+    [(null? l)         '()]
+    [(test? a (car l)) (cdr l)]
+    [else              (cons (car l)
+                             (rember-f test? a (cdr l)))]))

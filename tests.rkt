@@ -283,5 +283,13 @@
                            (stewed prune))))
   (check-true  (fullfun? '((grape raisin)
                            (plum prune)
-                           (stewed grape))))
+                           (stewed grape)))))
+
+(test-case "Chapter 8"
+  (check-equal? (rember-f = 5 '(6 2 5 3))
+                '(6 2 3))
+  (check-equal? (rember-f eq? 'jelly '(jelly beans are good))
+                '(beans are good))
+  (check-equal? (rember-f equal? '(pop corn) '(lemonade (pop corn) and (cake)))
+                '(lemonade and (cake)))
 )

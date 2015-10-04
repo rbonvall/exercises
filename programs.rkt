@@ -389,3 +389,6 @@
     [(null? rel) '()]
     [else        (cons (revpair (car rel))
                        (revrel  (cdr rel)))]))
+
+(define (fullfun? fun)
+  (fun? (revrel fun)))

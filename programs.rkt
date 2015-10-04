@@ -463,3 +463,10 @@
     [else         ((atom-to-function (operator nexp))
                    (value-rewritten (1st-sub-exp nexp))
                    (value-rewritten (2nd-sub-exp nexp)))]))
+
+(define ((multirember-f test?) a lat)
+  (cond
+    [(null? lat)         '()]
+    [(test? a (car lat)) ((multirember-f test?) a (cdr lat))]
+    [else                (cons (car lat)
+                               ((multirember-f test?) a (cdr lat)))]))

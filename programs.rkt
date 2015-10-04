@@ -477,3 +477,17 @@
     [(test? (car lat)) (multiremberT test? (cdr lat))]
     [else              (cons (car lat)
                              (multiremberT test? (cdr lat)))]))
+
+(define (multirember&co a lat col)
+  (cond
+    [(null? lat)          (col '() '())]
+    [(eq? (car lat) a)    (multirember&co a
+                                          (cdr lat)
+                                          (λ (newlat seen)
+                                             (col newlat
+                                                  (cons (car lat) seen))))]
+    [else                 (multirember&co a
+                                          (cdr lat)
+                                          (λ (newlat seen)
+                                             (col (cons (car lat) newlat)
+                                                  seen)))]))

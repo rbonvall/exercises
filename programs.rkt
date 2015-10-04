@@ -436,6 +436,13 @@
 (define (seqR a b c)
   (cons b (cons a c)))
 
+(define (seqS a b c)
+  (cons a c))
+
+(define (seqrem a b c)
+  c)
+
+
 (define ((insert-g seq) new old lat)
   (cond
     [(null? lat)         '()]

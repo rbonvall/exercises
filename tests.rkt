@@ -308,4 +308,8 @@
                                        '(a b c e d f g d h))
   (check-equal? ((insert-g seqR) 'e 'd '(a b c d   f g d h))
                                        '(a b c d e f g d h))
+  (check-equal? ((insert-g seqS) 'e 'd '(a b c d f g d h))
+                                       '(a b c e f g d h))
+  (check-equal? ((insert-g seqrem) #f 'd '(a b c d f g d h))
+                                         '(a b c   f g d h))
 )

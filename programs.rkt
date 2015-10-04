@@ -377,3 +377,6 @@
   (car (cdr (cdr p))))
 (define (build s1 s2)
   (cons s1 (cons s2 '())))
+
+(define (fun? rel)
+  (set? (firsts rel)))

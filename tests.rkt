@@ -312,4 +312,7 @@
                                        '(a b c e f g d h))
   (check-equal? ((insert-g seqrem) #f 'd '(a b c d f g d h))
                                          '(a b c   f g d h))
+  (check-equal? (atom-to-function (operator '(5 + 3)))
+                plus)
+  (check-equal? (value-rewritten '(1 + (3 ↑ 4))) 82)
 )

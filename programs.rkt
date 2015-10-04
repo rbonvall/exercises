@@ -296,8 +296,10 @@
     [else         (and (numbered? (car aexp))
                        (numbered? (car (cdr (cdr aexp)))))]))
 
+
 (define 1st-sub-exp car)
 (define 2nd-sub-exp (compose car cdr cdr))
+(define operator    (compose car cdr))
 
 (define (value nexp)
   (cond
@@ -442,10 +444,22 @@
 (define (seqrem a b c)
   c)
 
-
 (define ((insert-g seq) new old lat)
   (cond
     [(null? lat)         '()]
     [(eq? old (car lat)) (seq new old (cdr lat))]
     [else                (cons (car lat)
                                ((insert-g seq) new old (cdr lat)))]))
+
+(define (atom-to-function x)
+  (cond
+    [(eq? x '+) plus]
+    [(eq? x '̣×) ×]
+    [else       ↑]))
+
+(define (value-rewritten nexp)
+  (cond
+    [(atom? nexp) nexp]
+    [else         ((atom-to-function (operator nexp))
+                   (value-rewritten (1st-sub-exp nexp))
+                   (value-rewritten (2nd-sub-exp nexp)))]))

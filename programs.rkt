@@ -381,8 +381,11 @@
 (define (fun? rel)
   (set? (firsts rel)))
 
+(define (revpair pair)
+  (build (second pair) (first pair)))
+
 (define (revrel rel)
   (cond
     [(null? rel) '()]
-    [else        (cons (build (second (car rel)) (first (car rel)))
-                       (revrel (cdr rel)))]))
+    [else        (cons (revpair (car rel))
+                       (revrel  (cdr rel)))]))

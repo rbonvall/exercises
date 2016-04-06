@@ -491,3 +491,65 @@
                                           (λ (newlat seen)
                                              (col (cons (car lat) newlat)
                                                   seen)))]))
+
+(define (a-friend x y)
+  (null? y))
+
+(define (last-friend x y) (length x))
+
+(define (multiinsertLR new oldL oldR lat)
+  (cond
+    [(null? lat)          '()]
+    [(eq? (car lat) oldL) (cons new
+                                (cons oldL
+                                      (multiinsertLR new oldL oldR (cdr lat))))]
+    [(eq? (car lat) oldR) (cons oldR
+                                (cons new
+                                      (multiinsertLR new oldL oldR (cdr lat))))]
+    [else                 (cons (car lat)
+                                (multiinsertLR new oldL oldR (cdr lat)))]))
+
+(define (multiinsertLR&co new oldL oldR lat col)
+  (cond
+    [(null? lat) (col '() 0 0)]
+    [(eq? (car lat) oldL) (multiinsertLR&co new oldL oldR (cdr lat) (λ (n l r) (col (cons new
+                                                                                          (cons oldL n))
+                                                                                    (add1 l)
+                                                                                    r)))]
+    [(eq? (car lat) oldR) (multiinsertLR&co new oldL oldR (cdr lat) (λ (n l r) (col (cons oldR
+                                                                                          (cons new n))
+                                                                                    l
+                                                                                    (add1 r))))]
+    [else                 (multiinsertLR&co new oldL oldR (cdr lat) (λ (n l r) (col (cons (car lat) n)
+                                                                                    l
+                                                                                    r)))]))
+
+(define (even? n)
+  (= (× (÷ n 2) 2)
+     n))
+
+(define (evens-only* l)
+  (cond
+    [(null? l) '()]
+    [(atom? (car l)) (if (even? (car l)) (cons (car l) (evens-only* (cdr l)))
+                                         (evens-only* (cdr l)))]
+    [else            (cons (evens-only* (car l))
+                           (evens-only* (cdr l)))]))
+
+(define (evens-only*&co l col)
+  (cond
+    [(null? l)       (col '() 1 0)]
+    [(atom? (car l))
+     (cond
+       [(even? (car l)) (evens-only*&co (cdr l) (λ (n p s) (col (cons (car l) n)
+                                                                (× p (car l))
+                                                                s)))]
+       [else            (evens-only*&co (cdr l) (λ (n p s) (col n
+                                                                p
+                                                                (plus s (car l)))))])]
+    [else               (evens-only*&co (cdr l) (λ (n p s) (col '() ;;; TODO: correct first argument
+                                                                p
+                                                                s)))]))
+
+(define (the-last-friend newl product sum)
+  (cons sum (cons product newl)))

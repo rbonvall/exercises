@@ -319,4 +319,31 @@
                 '(shrimp salad salad and))
   (check-equal? (multiremberT (eq?-c 'tuna) '(shrimp salad tuna salad and tuna))
                 '(shrimp salad salad and))
+  (check-true  (multirember&co 'tuna '()                                a-friend))
+  (check-false (multirember&co 'tuna '(tuna)                            a-friend))
+  (check-false (multirember&co 'tuna '(strawberries tuna and swordfish) a-friend))
+  (check-equal? (multirember&co 'tuna '(strawberries tuna and swordfish) last-friend) 3)
+  (check-equal? (multiinsertLR 'salty 'fish 'chips
+                               '(chips       and       fish or       fish and chips))
+                               '(chips salty and salty fish or salty fish and chips salty))
+  (check-equal? (multiinsertLR&co 'salty 'fish 'chips
+                                  '(chips       and       fish or       fish and chips)
+                                  (λ (n l r) (length n)))
+                11)
+  (check-equal? (multiinsertLR&co 'salty 'fish 'chips
+                                  '(chips       and       fish or       fish and chips)
+                                  (λ (n l r) (list l r)))
+                '(2 2))
+  (check-true  (even? 0))
+  (check-false (even? 1))
+  (check-true  (even? 2))
+  (check-false (even? 3))
+  (check-true  (even? 4))
+  (check-equal? (evens-only* '((9 1 2 8) 3 10 ((9 9) 7 6) 2))
+                             '((    2 8)   10 ((   )   6) 2))
+
+  (check-equal? (evens-only*&co '((9 1 2 8) 3 10 ((9 9) 7 6) 2) the-last-friend)
+                '(38 1920 (2 8) 10 (() 6 2)))
 )
+
+

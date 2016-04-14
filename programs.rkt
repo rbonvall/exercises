@@ -541,15 +541,19 @@
     [(null? l)       (col '() 1 0)]
     [(atom? (car l))
      (cond
-       [(even? (car l)) (evens-only*&co (cdr l) (λ (n p s) (col (cons (car l) n)
-                                                                (× p (car l))
-                                                                s)))]
-       [else            (evens-only*&co (cdr l) (λ (n p s) (col n
-                                                                p
-                                                                (plus s (car l)))))])]
-    [else               (evens-only*&co (cdr l) (λ (n p s) (col '() ;;; TODO: correct first argument
-                                                                p
-                                                                s)))]))
+       [(even? (car l)) (evens-only*&co (cdr l)
+                                        (λ (n p s) (col (cons (car l) n)
+                                                        (× p (car l))
+                                                        s)))]
+       [else            (evens-only*&co (cdr l)
+                                        (λ (n p s) (col n
+                                                        p
+                                                        (plus s (car l)))))])]
+    [else               (evens-only*&co (car l)
+                                        (λ (n p s) (evens-only*&co (cdr l)
+                                                                   (λ (N P S) (col (cons n N)
+                                                                                   (×    p P)
+                                                                                   (plus s S))))))]))
 
 (define (the-last-friend newl product sum)
   (cons sum (cons product newl)))

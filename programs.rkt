@@ -557,3 +557,38 @@
 
 (define (the-last-friend newl product sum)
   (cons sum (cons product newl)))
+
+(define (looking a lat)
+  (keep-looking a (pick 1 lat) lat))
+
+(define (keep-looking a sym-or-num lat)
+  (cond
+    [(number? sym-or-num) (keep-looking a (pick sym-or-num lat) lat)]
+    [else                 (eq? a sym-or-num)]))
+
+(define (eternity x)
+  (eternity x))
+
+(define (shift pair)
+  (build (first (first pair))
+         (build (second (first pair))
+                (second pair))))
+
+(define (align pair-or-atom)
+  (cond
+    [(atom? pair-or-atom)           pair-or-atom]
+    [(a-pair? (first pair-or-atom)) (align (shift pair-or-atom))]
+    [else                           (build (first pair-or-atom)
+                                           (align (second pair-or-atom)))]))
+
+(define (length* pair-or-atom)
+  (cond
+    [(atom? pair-or-atom) 1]
+    [else                 (plus (length* (first pair-or-atom))
+                                (length* (second pair-or-atom)))]))
+
+(define (weight* pair-or-atom)
+  (cond
+    [(atom? pair-or-atom) 1]
+    [else                 (plus (× 2 (length* (first pair-or-atom)))
+                                (length* (second pair-or-atom)))]))

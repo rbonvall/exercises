@@ -343,7 +343,19 @@
                              '((    2 8)   10 ((   )   6) 2))
 
   (check-equal? (evens-only*&co '((9 1 2 8) 3 10 ((9 9) 7 6) 2) the-last-friend)
-                '(38 1920 (2 8) 10 (() 6) 2))
-)
+                '(38 1920 (2 8) 10 (() 6) 2)))
 
+
+(test-case "Chapter 9"
+  (check-true   (looking 'caviar '(6 2 4 caviar 5 7 3)))
+  (check-false  (looking 'caviar '(6 2 grits caviar 5 7 3)))
+  (check-equal? (shift '((a  b) c))
+                       '( a (b  c)))
+  (check-equal? (shift '((a  b) (c d)))
+                       '( a (b  (c d))))
+  (check-equal? (length* '((a  b) c )) 3)
+  (check-equal? (length* '( a (b  c))) 3)
+  (check-equal? (weight* '((a  b) c )) 5)
+  (check-equal? (weight* '( a (b  c))) 4)
+)
 

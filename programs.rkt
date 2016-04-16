@@ -612,3 +612,37 @@
     [(zero? m) (A (sub1 n) 1)]
     [else      (A (sub1 n)
                   (A n (sub1 m)))]))
+
+(define length0
+  (λ (l)
+     (cond
+       [(null? l) 0]
+       [else      (add1 (eternity (cdr l)))])))
+
+(define length≤1
+  (λ (l)
+     (cond
+       [(null? l) 0]
+       [else      (add1 ((λ (l)
+                           (cond
+                             [(null? l) 0]
+                             [else      (add1 (eternity (cdr l)))]))
+                         (cdr l)))])))
+
+(define length≤2
+  (λ (l)
+     (cond
+       [(null? l) 0]
+       [else      (add1 ((λ (l)
+                           (cond
+                             [(null? l) 0]
+                             [else      (add1 ((λ (l)
+                                                  (cond
+                                                    [(null? l) 0]
+                                                    [else      (add1 ((λ (l)
+                                                                         (cond
+                                                                           [(null? l) 0]
+                                                                           [else      (add1 (eternity (cdr l)))]))
+                                                                      (cdr l)))]))
+                                               (cdr l)))]))
+                         (cdr l)))])))

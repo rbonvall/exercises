@@ -363,5 +363,11 @@
   (check-equal? (A 1 0) 2)
   (check-equal? (A 1 1) 3)
   (check-equal? (A 2 2) 7)
+  (check-equal? (length0 '()) 0)
+  (check-equal? (length≤1 '())  0)
+  (check-equal? (length≤1 '(a)) 1)
+  (check-equal? (length≤2 '())    0)
+  (check-equal? (length≤2 '(a))   1)
+  (check-equal? (length≤2 '(a a)) 2)
 )
 

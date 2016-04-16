@@ -357,5 +357,11 @@
   (check-equal? (length* '( a (b  c))) 3)
   (check-equal? (weight* '((a  b) c )) 5)
   (check-equal? (weight* '( a (b  c))) 4)
+  (check-equal? (shuffle '(a (b c))) '(a (b c)))
+  (check-equal? (shuffle '(a b))     '(a b))
+  ;(check-equal? (shuffle '((a b) (c d))) ...)  ; Never finishes.
+  (check-equal? (A 1 0) 2)
+  (check-equal? (A 1 1) 3)
+  (check-equal? (A 2 2) 7)
 )
 

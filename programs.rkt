@@ -454,7 +454,7 @@
 (define (atom-to-function x)
   (cond
     [(eq? x '+) plus]
-    [(eq? x '̣×) ×]
+    [(eq? x '×) ×]
     [else       ↑]))
 
 (define (value-rewritten nexp)
@@ -592,3 +592,23 @@
     [(atom? pair-or-atom) 1]
     [else                 (plus (× 2 (length* (first pair-or-atom)))
                                 (length* (second pair-or-atom)))]))
+
+(define (shuffle pair-or-atom)
+  (cond
+    [(atom? pair-or-atom)           pair-or-atom]
+    [(a-pair? (first pair-or-atom)) (shuffle (revpair pair-or-atom))]
+    [else                           (build (first pair-or-atom)
+                                           (shuffle (second pair-or-atom)))]))
+
+(define (C n)
+  (cond
+    [(one? n)  1]
+    [(even? n) (C (÷ n 2))]
+    [else      (C (add1 (× 3 n)))]))
+
+(define (A n m)
+  (cond
+    [(zero? n) (add1 m)]
+    [(zero? m) (A (sub1 n) 1)]
+    [else      (A (sub1 n)
+                  (A n (sub1 m)))]))

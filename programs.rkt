@@ -651,15 +651,15 @@
 
 (define length≤1*
   ((λ (f)
-     (λ (l)
-        (cond
-          [(null? l) 0]
-          [else      (add1 (f (cdr l)))])))
-   ((λ (g)
       (λ (l)
          (cond
            [(null? l) 0]
-           [else      (add1 (g (cdr l)))])))
+           [else      (add1 (f (cdr l)))])))
+   ((λ (g)
+       (λ (l)
+          (cond
+            [(null? l) 0]
+            [else      (add1 (g (cdr l)))])))
     eternity)))
 
 (define length≤2*
@@ -669,13 +669,15 @@
            [(null? l) 0]
            [else      (add1 (f (cdr l)))])))
    ((λ (g)
-      (λ (l)
-         (cond
-           [(null? l) 0]
-           [else      (add1 (g (cdr l)))])))
+       (λ (l)
+          (cond
+            [(null? l) 0]
+            [else      (add1 (g (cdr l)))])))
     ((λ (h)
         (λ (l)
            (cond
              [(null? l) 0]
              [else      (add1 (h (cdr l)))])))
      eternity))))
+
+

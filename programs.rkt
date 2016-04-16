@@ -706,3 +706,29 @@
          (cond
            [(null? l) 0]
            [else      (add1 (length (cdr l)))])))))
+
+; Pass mk-length to itself, rename length to mk-length.
+
+(define length0***
+  ((λ (mk-length) (mk-length mk-length))
+   (λ (mk-length)
+      (λ (l)
+         (cond
+           [(null? l) 0]
+           [else      (add1 (mk-length (cdr l)))])))))
+
+(define length≤1***
+  ((λ (mk-length) (mk-length mk-length))
+   (λ (mk-length)
+      (λ (l)
+         (cond
+           [(null? l) 0]
+           [else      (add1 ((mk-length eternity) (cdr l)))])))))
+
+(define length***
+  ((λ (mk-length) (mk-length mk-length))
+   (λ (mk-length)
+      (λ (l)
+         (cond
+           [(null? l) 0]
+           [else      (add1 ((mk-length mk-length) (cdr l)))])))))

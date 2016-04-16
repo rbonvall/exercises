@@ -388,5 +388,17 @@
   (check-equal? (length≤2** '())    0)
   (check-equal? (length≤2** '(a))   1)
   (check-equal? (length≤2** '(a a)) 2)
+
+  (check-equal? (length0*** '()) 0)
+
+  (check-equal? (length≤1*** '())  0)
+  (check-equal? (length≤1*** '(a)) 1)
+
+  (check-equal? (length*** '())  0)
+  (check-equal? (length*** '(a)) 1)
+  (check-equal? (length*** '(a a a a a)) 5)
+  (check-equal? (length*** '(a a a a a a
+                             a a a a a a
+                             a a a a a a)) 18)
 )
 

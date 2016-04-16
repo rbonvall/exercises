@@ -680,4 +680,29 @@
              [else      (add1 (h (cdr l)))])))
      eternity))))
 
+; Name the function that takes length and returns a function
+; that looks like length. A good name for this function is mk-length.
 
+(define length0**
+  ((λ (mk-length) (mk-length eternity))
+   (λ (length)
+      (λ (l)
+         (cond
+           [(null? l) 0]
+           [else      (add1 (length (cdr l)))])))))
+
+(define length≤1**
+  ((λ (mk-length) (mk-length (mk-length eternity)))
+   (λ (length)
+      (λ (l)
+         (cond
+           [(null? l) 0]
+           [else      (add1 (length (cdr l)))])))))
+
+(define length≤2**
+  ((λ (mk-length) (mk-length (mk-length (mk-length eternity))))
+   (λ (length)
+      (λ (l)
+         (cond
+           [(null? l) 0]
+           [else      (add1 (length (cdr l)))])))))

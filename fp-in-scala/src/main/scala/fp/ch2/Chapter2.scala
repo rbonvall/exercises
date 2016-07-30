@@ -23,4 +23,19 @@ object Chapter2 {
   def isSorted[A](as: Array[A], ordered: (A, A) ⇒ Boolean): Boolean =
     as.length < 2 || ordered(as(0), as(1)) && isSorted(as.tail, ordered)
 
+  def partial1[A, B, C](a: A, f: (A, B) ⇒ C): B ⇒ C =
+    (b: B) ⇒ f(a, b)
+
+  // ⇒ associates to the right,
+  // so A ⇒ B ⇒ C is the same as A ⇒ (B ⇒ C).
+
+  def curry[A, B, C](f: (A, B) ⇒ C): A ⇒ B ⇒ C =
+    a ⇒ b ⇒ f(a, b)
+
+  def uncurry[A, B, C](f: A ⇒ B ⇒ C): (A, B) ⇒ C =
+    (a, b) ⇒ f(a)(b)
+
+  def compose[A, B, C](f: B ⇒ C, g: A ⇒ B): A ⇒ C =
+    a ⇒ f(g(a))
+
 }

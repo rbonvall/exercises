@@ -32,4 +32,43 @@ class Chapter2Spec extends FunSpec {
 
     }
   }
+
+  describe("partial1") {
+    it("partially applies a binary function with the first parameter") {
+      val f = partial1(0, Math.max)
+      assert(f(-2) === 0)
+      assert(f(-1) === 0)
+      assert(f( 0) === 0)
+      assert(f( 1) === 1)
+      assert(f( 2) === 2)
+    }
+  }
+
+  describe("curry") {
+    it("curries") {
+      val f = curry((a: Int, b: Int) => a * b)
+      val neg = f(-1)
+      assert(neg(15) === -15)
+      assert(neg(-8) === 8)
+    }
+  }
+
+  describe("uncurry") {
+    it("uncurries") {
+      val mul = uncurry((a: Int) ⇒ (b: Int) ⇒ a * b)
+      assert(mul(3, 4) === 12)
+    }
+  }
+
+  describe("compose") {
+    it("composes") {
+      def next(n: Int) = n + 1
+      def twice(n: Int) = 2 * n
+      val nt = compose(next, twice)
+      val tn = compose(twice, next)
+      assert(nt(5) === 11)
+      assert(tn(5) === 12)
+    }
+  }
+
 }

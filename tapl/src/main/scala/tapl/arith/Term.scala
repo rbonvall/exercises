@@ -23,7 +23,7 @@ object Term {
       (for { t1 ← s ; t2 ← s ; t3 ← s } yield Cond(t1, t2, t3))
     }
 
-  def terms = Stream.from(0).flatMap { i ⇒ S(i) }
+  val terms: Stream[Term] = Stream.from(0).flatMap(S).distinct
 
 }
 

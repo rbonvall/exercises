@@ -29,7 +29,8 @@ class TermSpec extends FunSpec {
       ))
 
       // Exercise 3.2.4: How many elements does S₃ have?
-      assert(S(3).size === 3 + 3 * 39 + 39 * 39 * 39)
+      val n = S(2).size
+      assert(S(3).size === 3 + 3 * n + n * n * n)
 
     }
   }

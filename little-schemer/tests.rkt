@@ -394,11 +394,14 @@
   (check-equal? (length≤1*** '())  0)
   (check-equal? (length≤1*** '(a)) 1)
 
-  (check-equal? (length*** '())  0)
-  (check-equal? (length*** '(a)) 1)
-  (check-equal? (length*** '(a a a a a)) 5)
-  (check-equal? (length*** '(a a a a a a
-                             a a a a a a
-                             a a a a a a)) 18)
+  (for ([f (in-list `(,length*** ,length**** ,length***** ,length-Y))])
+    (check-equal? (f '())  0)
+    (check-equal? (f '(a)) 1)
+    (check-equal? (f '(a a a a a)) 5)
+    (check-equal? (f '(a a a a a a
+                       a a a a a a
+                       a a a a a a)) 18))
+
 )
 
+(displayln ":)")

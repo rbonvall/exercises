@@ -732,3 +732,46 @@
          (cond
            [(null? l) 0]
            [else      (add1 ((mk-length mk-length) (cdr l)))])))))
+
+(define length****
+  ((λ (m) (m m))
+   (λ (m)
+
+     ; This part doesn't depend on m at all!
+     ((λ (length)
+        (λ (l)
+          (cond
+            [(null? l) 0]
+            [else      (add1 (length (cdr l)))])))
+
+      ; (m m) doesn't work (infinite recursion)
+      ; so we wrap it in a lambda.
+      (λ (x) ((m m) x))))))
+
+; Move out the length-looking function and give it a name:
+(define length*****
+  {
+   (λ (le)
+     ((λ (m)             (m m)     )
+      (λ (m) (le (λ (x) ((m m) x))))))
+
+   (λ (length)
+     (λ (l)
+       (cond
+         [(null? l) 0]
+         [else      (add1 (length (cdr l)))])))
+  })
+
+; Let's separate the function that makes length
+; from the function that looks like length.
+; The former is called the applicative-order Y combinator:
+(define (Y le)
+  ((λ (f)             (f f)      )
+   (λ (f) (le (λ (x) ((f f) x))))))
+
+(define length-Y
+  (Y (λ (length)
+       (λ (l)
+         (cond
+           [(null? l) 0]
+           [else      (add1 (length (cdr l)))])))))

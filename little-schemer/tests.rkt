@@ -405,8 +405,9 @@
 (test-case "Chapter 10"
   (define e '((appetizers entrée beverage)
               (food       tastes good)))
-  (check-equal? (lookup-in-entry 'appetizers e (λ (x) #f)) 'food)
-  (check-equal? (lookup-in-entry 'dessert    e (λ (x) #f)) #f)
+  (for ([lie (in-list (list lookup-in-entry lookup-in-entry*))])
+    (check-equal? (lie 'appetizers e (λ (x) #f)) 'food)
+    (check-equal? (lie 'dessert    e (λ (x) #f)) #f))
 )
 
 (displayln ":)")

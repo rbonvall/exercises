@@ -780,11 +780,26 @@
 
 (define new-entry build)
 
-(define (lookup-in-entry name entry entry-f)
+; My version
+(define (lookup-in-entry* name entry entry-f)
   (cond
     [(null? (first entry))          (entry-f name)]
     [(eq? name (car (first entry))) (car (second entry))]
-    [else                           (lookup-in-entry name
-                                                     (new-entry (cdr (first entry))
-                                                                (cdr (second entry)))
-                                                     entry-f)]))
+    [else                           (lookup-in-entry* name
+                                                      (new-entry (cdr (first entry))
+                                                                 (cdr (second entry)))
+                                                      entry-f)]))
+
+; Version from the book
+(define (lookup-in-entry-help name names values entry-f)
+  (cond
+    [(null? names)          (entry-f name)]
+    [(eq? name (car names)) (car values)]
+    [else                   (lookup-in-entry-help name
+                                                  (cdr names)
+                                                  (cdr values)
+                                                  entry-f)]))
+
+
+(define (lookup-in-entry name entry entry-f)
+  (lookup-in-entry-help name (first entry) (second entry) entry-f))

@@ -400,8 +400,13 @@
     (check-equal? (f '(a a a a a)) 5)
     (check-equal? (f '(a a a a a a
                        a a a a a a
-                       a a a a a a)) 18))
+                       a a a a a a)) 18)))
 
+(test-case "Chapter 10"
+  (define e '((appetizers entrée beverage)
+              (food       tastes good)))
+  (check-equal? (lookup-in-entry 'appetizers e (λ (x) #f)) 'food)
+  (check-equal? (lookup-in-entry 'dessert    e (λ (x) #f)) #f)
 )
 
 (displayln ":)")

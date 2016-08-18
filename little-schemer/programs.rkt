@@ -775,3 +775,16 @@
          (cond
            [(null? l) 0]
            [else      (add1 (length (cdr l)))])))))
+
+;; Chapter 10
+
+(define new-entry build)
+
+(define (lookup-in-entry name entry entry-f)
+  (cond
+    [(null? (first entry))          (entry-f name)]
+    [(eq? name (car (first entry))) (car (second entry))]
+    [else                           (lookup-in-entry name
+                                                     (new-entry (cdr (first entry))
+                                                                (cdr (second entry)))
+                                                     entry-f)]))

@@ -408,6 +408,13 @@
   (for ([lie (in-list (list lookup-in-entry lookup-in-entry*))])
     (check-equal? (lie 'appetizers e (λ (x) #f)) 'food)
     (check-equal? (lie 'dessert    e (λ (x) #f)) #f))
+
+  (define env '(((entrée dessert)
+                 (spaghetti spumoni))
+                ((appetizer entrée beverage)
+                 (food      tastes good))))
+
+  (check-equal? (lookup-in-table 'entrée env (λ (x) #f)) 'spaghetti)
 )
 
 (displayln ":)")

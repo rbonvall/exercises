@@ -778,6 +778,11 @@
 
 ;; Chapter 10
 
+; An entry is:
+; * a pair of lists...
+; * that are of equal length...
+; * the first of which is a set.
+
 (define new-entry build)
 
 ; My version
@@ -803,3 +808,88 @@
 
 (define (lookup-in-entry name entry entry-f)
   (lookup-in-entry-help name (first entry) (second entry) entry-f))
+
+; A table (or environment) is a list of entries.
+
+(define extend-table cons)
+
+(define (lookup-in-table name table table-f)
+  (cond
+    [(null? table) (table-f name)]
+    [else
+     (lookup-in-entry name
+                      (car table)
+                      (λ (n) (lookup-in-entry n (cdr table) table-f)))]))
+
+; Types: *const, *quote, *identifier, *lambda, *cond, *application.
+; We'll represent types as functions. We call them "actions."
+
+; Produce the correct action for each possible well-formed S-expr:
+(define (expression-to-action e)
+  (cond
+    [(atom? e) (atom-to-action e)]
+    [else      (list-to-action e)]))
+
+(define (atom-to-action e)
+  (cond
+    [(number? e)      *const]
+    [(eq? e #t)       *const]
+    [(eq? e #f)       *const]
+    [(eq? e 'cons)    *const]
+    [(eq? e 'car)     *const]
+    [(eq? e 'cdr)     *const]
+    [(eq? e 'null?)   *const]
+    [(eq? e 'eq?)     *const]
+    [(eq? e 'atom?)   *const]
+    [(eq? e 'zero?)   *const]
+    [(eq? e 'add1)    *const]
+    [(eq? e 'sub1)    *const]
+    [(eq? e 'number?) *const]
+    [else             *identifier]))
+
+(define (list-to-action e)
+  (cond
+    [(not (atom? (car e))) *application]
+    [(eq? (car e) 'quote)  *quote]
+    [(eq? (car e) 'lambda) *lambda]
+    [(eq? (car e) 'cond)   *cond]
+    [else                  *application]))
+
+(define (value* e)
+  (meaning e '()))
+
+(define (meaning e table)
+  ((expression-to-action e) e table))
+
+; Actions take two arguments: e and a table.
+
+(define (*const e table)
+  (cond
+    [(number? e) e]
+    [(eq? e #t)  #t]
+    [(eq? e #f)  #f]
+    [else        (build 'primitive e)]))
+
+(define (*quote e table)
+  (text-of e))
+
+(define text-of second)
+
+(define (*identifier e table)
+  (lookup-in-table e table initial-table))
+
+(define (initial-table name)
+  (car '())) ; When is it used? Let's hope never.
+
+; For a function definition, we want to remember:
+; * the argument list (formals),
+; * the body, and
+; * the table.
+(define (*lambda e table)
+  (build 'non-primitive (cons table
+                              (cdr e)))) ; formals + body
+
+; Helpers
+(define table-of   first)
+(define formals-of second)
+(define body-of    third)

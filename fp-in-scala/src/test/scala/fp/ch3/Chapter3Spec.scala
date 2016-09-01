@@ -87,6 +87,13 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("reverse") {
+    it("reverses a list") {
+      assert(reverse(Nil) === Nil)
+      assert(reverse(xs) === List("d", "c", "b", "a"))
+    }
+  }
+
 
 
 }

@@ -61,4 +61,8 @@ object Chapter3 {
   def productL(xs: List[Double]): Double = foldLeft(xs, 1.0) { _ * _ }
   def lengthL[A](as: List[A]): Int = foldLeft(as, 0) { (a, _) ⇒ a + 1 }
 
+  // Exercise 3.12
+  def reverse[T](xs: List[T]): List[T] = foldLeft(xs, List[T]()) { (acc, x) ⇒ x :: acc }
+
+
 }

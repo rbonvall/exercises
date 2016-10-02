@@ -35,4 +35,40 @@ class TermSpec extends FunSpec {
     }
   }
 
+  describe("eval") {
+    import Term._
+
+    it("returns constants unchanged") {
+      assert(Term.eval(True)  === True)
+      assert(Term.eval(False) === False)
+      assert(Term.eval(Zero)  === Zero)
+    }
+
+    it("evaluates a numerical term") {
+      assert(Term.eval(Succ(Zero))             === Succ(Zero))
+      assert(Term.eval(Pred(Succ(Zero)))       === Zero)
+      assert(Term.eval(Succ(Pred(Succ(Zero)))) === Succ(Zero))
+      assert(Term.eval(Pred(Zero))             === Zero)
+    }
+
+    it("evaluates conditionals") {
+      assert(Term.eval(Cond(True,  Zero, Succ(Zero))) === Zero)
+      assert(Term.eval(Cond(False, Zero, Succ(Zero))) === Succ(Zero))
+    }
+
+    it("evaluates nested expressions") {
+      val t1 = Cond(True, Cond(False, False, False), True)
+      assert(Term.eval(t1) === False)
+
+      val t2 = Pred(Cond(Cond(True, False, True), Succ(Zero), Succ(Succ(Zero))))
+      assert(Term.eval(t2) === Succ(Zero))
+    }
+
+    it("returns nonsensical expressions unchanged") {
+      assert(Term.eval(Pred(False)) === Pred(False))
+      assert(Term.eval(Cond(Zero, True, False)) === Cond(Zero, True, False))
+    }
+
+  }
+
 }

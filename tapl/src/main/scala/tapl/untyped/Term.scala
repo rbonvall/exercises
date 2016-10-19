@@ -8,13 +8,11 @@ case object NameBind extends Binding
 
 sealed trait Term {
   def repr(ctx: Term.Context): String = this match {
+    case Term.Var(n)          ⇒ indexToName(ctx, n)
+    case Term.App(fn, arg)    ⇒ s"(${fn.repr(ctx)} ${arg.repr(ctx)})"
     case Term.Abs(body, name) ⇒
       val (ctx2, x) = pickFreshName(ctx, name)
       s"(λ$x . ${body.repr(ctx2)})"
-    case Term.App(fn, arg) ⇒
-      s"(${fn.repr(ctx)} ${arg.repr(ctx)})"
-    case Term.Var(n) ⇒
-      indexToName(ctx, n)
   }
 
   def pickFreshName(ctx: Term.Context, name: String): (Term.Context, String) = ???

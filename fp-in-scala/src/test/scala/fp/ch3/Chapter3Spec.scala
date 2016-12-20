@@ -127,4 +127,10 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("mapToString") {
+    it("turns each value in a list of numbers into a string") {
+      assert(mapToString(List(1.1, -2.2, 3.14159)) === List("1.1", "-2.2", "3.14159"))
+    }
+  }
+
 }

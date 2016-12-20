@@ -82,4 +82,10 @@ object Chapter3 {
     case n :: ns ⇒ (n + 1) :: mapIncrement(ns)
   }
 
+  // Exercise 3.17
+  def mapToString(nums: List[Double]): List[String] = nums match {
+    case Nil     ⇒ Nil
+    case x :: xs ⇒ (x.toString) :: mapToString(xs)
+  }
+
 }

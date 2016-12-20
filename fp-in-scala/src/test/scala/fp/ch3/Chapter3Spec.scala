@@ -106,9 +106,12 @@ class Chapter3Spec extends FunSpec {
       assert(foldr    ("12345".toList, 0) { (a, acc) ⇒ acc * 10 + a.toString.toInt } === 54321)
       assert(foldRight("12345".toList, 0) { (a, acc) ⇒ acc * 10 + a.toString.toInt } === 54321)
     }
-
   }
 
-
+  describe("append") {
+    it("implements append in terms of foldRight") {
+      assert(append(1 :: 2 :: 3 :: Nil, 4) === 1 :: 2 :: 3 :: 4 :: Nil)
+    }
+  }
 
 }

@@ -68,5 +68,8 @@ object Chapter3 {
   def foldl[A, B](as: List[A], z: B)(f: (B, A) ⇒ B): B = foldRight(as.reverse, z) { (a, acc) ⇒ f(acc, a) }
   def foldr[A, B](as: List[A], z: B)(f: (A, B) ⇒ B): B = foldLeft (as.reverse, z) { (acc, a) ⇒ f(a, acc) }
 
+  // Exercise 3.14
+  def append[A](as: List[A], newA: A): List[A] = foldRight(as, newA :: Nil) { (a, acc) ⇒ a :: acc }
+
 
 }

@@ -94,6 +94,21 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("foldl") {
+    it("implements foldLeft using foldRight") {
+      assert(foldl   ("12345".toList, 0) { (acc, a) ⇒ acc * 10 + a.toString.toInt } === 12345)
+      assert(foldLeft("12345".toList, 0) { (acc, a) ⇒ acc * 10 + a.toString.toInt } === 12345)
+    }
+  }
+
+  describe("foldr") {
+    it("implements foldRight using foldLeft") {
+      assert(foldr    ("12345".toList, 0) { (a, acc) ⇒ acc * 10 + a.toString.toInt } === 54321)
+      assert(foldRight("12345".toList, 0) { (a, acc) ⇒ acc * 10 + a.toString.toInt } === 54321)
+    }
+
+  }
+
 
 
 }

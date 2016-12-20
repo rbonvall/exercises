@@ -64,5 +64,9 @@ object Chapter3 {
   // Exercise 3.12
   def reverse[T](xs: List[T]): List[T] = foldLeft(xs, List[T]()) { (acc, x) ⇒ x :: acc }
 
+  // Exercise 3.13
+  def foldl[A, B](as: List[A], z: B)(f: (B, A) ⇒ B): B = foldRight(as.reverse, z) { (a, acc) ⇒ f(acc, a) }
+  def foldr[A, B](as: List[A], z: B)(f: (A, B) ⇒ B): B = foldLeft (as.reverse, z) { (acc, a) ⇒ f(a, acc) }
+
 
 }

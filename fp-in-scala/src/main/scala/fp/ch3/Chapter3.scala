@@ -76,4 +76,10 @@ object Chapter3 {
     foldLeft(oneList, bigList) (append)
   }
 
+  // Exercise 3.16
+  def mapIncrement(ints: List[Int]): List[Int] = ints match {
+    case Nil     ⇒ Nil
+    case n :: ns ⇒ (n + 1) :: mapIncrement(ns)
+  }
+
 }

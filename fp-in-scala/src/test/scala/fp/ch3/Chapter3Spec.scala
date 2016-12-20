@@ -121,4 +121,10 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("mapIncrement") {
+    it("transforms a list of integers by adding 1 to each element") {
+      assert(mapIncrement(List(6, 1, -1, 4)) === List(7, 2, 0, 5))
+    }
+  }
+
 }

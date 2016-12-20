@@ -101,4 +101,7 @@ object Chapter3 {
                    else      filter(as)(f)
   }
 
+  // Exercise 3.20
+  def flatMap[A, B](values: List[A]) (f: A ⇒ List[B]): List[B] =
+    concatenate(map(values)(f))
 }

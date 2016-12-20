@@ -145,4 +145,10 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("flatMap") {
+    it("flatmaps") {
+      assert(flatMap(List(1, 2, 3)) { i ⇒ List(i, i) } === List(1, 1, 2, 2, 3, 3))
+    }
+  }
+
 }

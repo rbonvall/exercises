@@ -165,4 +165,11 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("zipWith") {
+    it("constructs a new list by combining corresponding elements") {
+      def f(x: Double, s: String): Long = math.round(x) - s.length
+      assert(zipWith(List(1.1, 2.7, 3.3), List("xx", "", "zzz"))(f) === List(-1, 3, 0))
+    }
+  }
+
 }

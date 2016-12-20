@@ -117,4 +117,11 @@ object Chapter3 {
     case (n :: ns, m :: ms) ⇒ (n + m) :: zipWithIntAdd(ns, ms)
   }
 
+  // Exercise 3.23
+  def zipWith[A, B, C](left: List[A], right: List[B]) (f: (A, B) ⇒ C): List[C] = (left, right) match {
+    case (Nil    , _      ) ⇒ Nil
+    case (_      , Nil    ) ⇒ Nil
+    case (n :: ns, m :: ms) ⇒ f(n, m) :: zipWith(ns, ms)(f)
+  }
+
 }

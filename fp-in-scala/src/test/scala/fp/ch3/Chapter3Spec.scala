@@ -151,4 +151,10 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("filterFM") {
+    it("implements filter in terms of flatMap") {
+      assert(filterFM(List(7, 2, 3, 0, 1, 9, 4))(_ % 2 == 0) === List(2, 0, 4))
+    }
+  }
+
 }

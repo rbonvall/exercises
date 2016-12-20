@@ -104,4 +104,10 @@ object Chapter3 {
   // Exercise 3.20
   def flatMap[A, B](values: List[A]) (f: A ⇒ List[B]): List[B] =
     concatenate(map(values)(f))
+
+  // Exercise 3.21
+  def filterFM[A](values: List[A]) (f: A ⇒ Boolean): List[A] = flatMap(values) { x ⇒
+    if (f(x)) List(x) else List()
+  }
+
 }

@@ -71,5 +71,9 @@ object Chapter3 {
   // Exercise 3.14
   def append[A](as: List[A], newA: A): List[A] = foldRight(as, newA :: Nil) { (a, acc) ⇒ a :: acc }
 
+  // Exercise 3.15
+  def concatenate[A](listOfLists: List[List[A]]): List[A] = foldLeft(listOfLists, List[A]()) { (bigList, oneList) ⇒
+    foldLeft(oneList, bigList) (append)
+  }
 
 }

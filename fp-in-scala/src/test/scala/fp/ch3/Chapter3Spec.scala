@@ -114,4 +114,11 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("concatenate") {
+    it("concatenates a list of lists into a single list in linear time") {
+      val listOfLists = List(List(1, 2, 3), List(4, 5), List(), List(6, 7, 8, 9))
+      assert(concatenate(listOfLists) === List(1, 2, 3, 4, 5, 6, 7, 8, 9))
+    }
+  }
+
 }

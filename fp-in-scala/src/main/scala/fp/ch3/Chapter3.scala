@@ -94,4 +94,11 @@ object Chapter3 {
     case a :: as ⇒ f(a) :: map(as)(f)
   }
 
+  // Exercise 3.19
+  def filter[A](values: List[A]) (f: A ⇒ Boolean): List[A] = values match {
+    case Nil     ⇒ Nil
+    case a :: as ⇒ if (f(a)) a :: filter(as)(f)
+                   else      filter(as)(f)
+  }
+
 }

@@ -139,4 +139,10 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("filter") {
+    it("removes elements from a list unless they satisfy a given predicate") {
+      assert(filter(List(7, 2, 3, 0, 1, 9, 4))(_ % 2 == 0) === List(2, 0, 4))
+    }
+  }
+
 }

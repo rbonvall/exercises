@@ -124,4 +124,7 @@ object Chapter3 {
     case (n :: ns, m :: ms) ⇒ f(n, m) :: zipWith(ns, ms)(f)
   }
 
+  // Exercise 3.24
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
+
 }

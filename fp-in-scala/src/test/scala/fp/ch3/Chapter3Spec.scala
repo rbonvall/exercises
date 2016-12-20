@@ -172,4 +172,18 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("hasSubsequence") {
+    it("checks whether a list contains another one as a subsequence") {
+      val sup = List(1, 2, 3, 4)
+      assert( hasSubsequence(sup, List()))
+      assert( hasSubsequence(sup, List(1, 2)))
+      assert( hasSubsequence(sup, List(2, 3)))
+      assert( hasSubsequence(sup, List(4)))
+      assert( hasSubsequence(sup, sup))
+      assert(!hasSubsequence(sup, List(1, 3)))
+      assert(!hasSubsequence(sup, List(2, 3, 5)))
+      assert(!hasSubsequence(sup, sup ++ List(9)))
+    }
+  }
+
 }

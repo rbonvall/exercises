@@ -110,4 +110,11 @@ object Chapter3 {
     if (f(x)) List(x) else List()
   }
 
+  // Exercise 3.22
+  def zipWithIntAdd(left: List[Int], right: List[Int]): List[Int] = (left, right) match {
+    case (Nil    , _      ) ⇒ Nil
+    case (_      , Nil    ) ⇒ Nil
+    case (n :: ns, m :: ms) ⇒ (n + m) :: zipWithIntAdd(ns, ms)
+  }
+
 }

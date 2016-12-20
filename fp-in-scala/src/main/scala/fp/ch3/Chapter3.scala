@@ -88,4 +88,10 @@ object Chapter3 {
     case x :: xs ⇒ (x.toString) :: mapToString(xs)
   }
 
+  // Exercise 3.18
+  def map[A, B](values: List[A]) (f: A ⇒ B): List[B] = values match {
+    case Nil     ⇒ Nil
+    case a :: as ⇒ f(a) :: map(as)(f)
+  }
+
 }

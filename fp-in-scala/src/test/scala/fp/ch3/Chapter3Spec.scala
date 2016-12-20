@@ -133,4 +133,10 @@ class Chapter3Spec extends FunSpec {
     }
   }
 
+  describe("map") {
+    it("modifies each element in a list while maintaining its structure") {
+      assert(map(List(6, 1, -1, 4)) { n ⇒ (n + 1).toString } === List("7", "2", "0", "5"))
+    }
+  }
+
 }

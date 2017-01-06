@@ -954,4 +954,7 @@
     [else                         #f]))
 
 (define (apply-closure closure args)
-  #f)
+  (meaning (body-of closure)
+           (extend-table
+             (new-entry (formals-of closure) args)
+             (table-of closure))))

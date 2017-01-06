@@ -910,4 +910,48 @@
   (evcon (cond-lines-of e) table))
 (define cond-lines-of cdr)
 
-(define *application #f)
+; Evaluates a list of representations of arguments of a function.
+(define (evlis args table)
+  (map (λ (arg) (meaning arg table)) args))
+
+(define (*application e table)
+  (apply
+    (meaning (function-of e) table)
+    (evlis   (arguments-of e) table)))
+
+(define function-of  car)
+(define arguments-of cdr)
+
+(define (primitive? l)
+  (eq? (first l) 'primitive))
+(define (non-primitive? l)
+  (eq? (first l) 'non-primitive))
+
+(define (apply fun args)
+  (cond
+    [(primitive? fun)     (apply-primitive (second fun) args)]
+    [(non-primitive? fun) (apply-closure   (second fun) args)]))
+
+(define (apply-primitive name args)
+  (cond
+    [(eq? name 'cons)    (cons    (first args) (second args))]
+    [(eq? name 'car)     (car     (first args))]
+    [(eq? name 'cdr)     (cdr     (first args))]
+    [(eq? name 'null?)   (null?   (first args))]
+    [(eq? name 'eq?)     (eq?     (first args) (second args))]
+    [(eq? name 'atom?)   (:atom?  (first args))]
+    [(eq? name 'zero?)   (zero?   (first args))]
+    [(eq? name 'add1)    (add1    (first args))]
+    [(eq? name 'sub1)    (sub1    (first args))]
+    [(eq? name 'number?) (number? (first args))]))
+
+(define (:atom? x)
+  (cond
+    [(atom? x)                    #t]
+    [(null? x)                    #f]
+    [(eq? (car x) 'primitive)     #t]
+    [(eq? (car x) 'non-primitive) #t]
+    [else                         #f]))
+
+(define (apply-closure closure args)
+  #f)

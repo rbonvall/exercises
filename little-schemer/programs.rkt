@@ -888,8 +888,26 @@
 (define (*lambda e table)
   (build 'non-primitive (cons table
                               (cdr e)))) ; formals + body
-
 ; Helpers
 (define table-of   first)
 (define formals-of second)
 (define body-of    third)
+
+(define (evcon lines table)
+  (cond
+    [(else? (question-of (car lines)))         (meaning (answer-of (car lines)) table)]
+    [(meaning (question-of (car lines)) table) (meaning (answer-of (car lines)) table)]
+    [else                                      (evcon (cdr lines) table)]))
+
+(define (else? q)
+  (and (atom? q)
+       (eq? q 'else)))
+
+(define question-of first)
+(define answer-of   second)
+
+(define (*cond e table)
+  (evcon (cond-lines-of e) table))
+(define cond-lines-of cdr)
+
+(define *application #f)

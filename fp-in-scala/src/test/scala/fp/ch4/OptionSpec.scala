@@ -40,4 +40,12 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  describe("flatMap") {
+    it("flatMaps without using pattern matching") {
+      assert(Some(3 ÷ 2).flatMap(invert) === Some(2 ÷ 3))
+      assert(Some(0 ÷ 3).flatMap(invert) === None)
+      assert(None       .flatMap(invert) === None)
+    }
+  }
+
 }

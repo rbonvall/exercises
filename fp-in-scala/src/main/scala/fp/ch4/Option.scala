@@ -16,7 +16,8 @@ sealed trait Option[+A] {
     case Some(x) ⇒ f(x)
     case None    ⇒ None
   }
-  def flatMap[B](f: A ⇒ Option[B]): Option[B] = ???
+  def flatMap[B](f: A ⇒ Option[B]): Option[B] =
+    this.map(f).orElse(Some(None)).asInstanceOf[Some[Option[B]]].get
 
 }
 

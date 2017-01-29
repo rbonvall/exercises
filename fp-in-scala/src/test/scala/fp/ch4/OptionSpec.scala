@@ -13,4 +13,14 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  describe("orElse") {
+    it("orElses") {
+      assert((Some(5) orElse Some(6)) === Some(5))
+      assert((Some(5) orElse None   ) === Some(5))
+      assert((None    orElse Some(6)) === Some(6))
+      assert((None    orElse None   ) === None)
+
+    }
+  }
+
 }

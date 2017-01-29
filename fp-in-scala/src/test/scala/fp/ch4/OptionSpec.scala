@@ -80,4 +80,13 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  describe("lift") {
+    it("lifts") {
+      assert(Option.lift(even)(Some(-8)) === Some(true))
+      assert(Option.lift(even)(Some(15)) === Some(false))
+      assert(Option.lift(even)(None)     === None)
+
+    }
+  }
+
 }

@@ -23,6 +23,8 @@ sealed trait Option[+A] {
     case Some(x) ⇒ x
     case None    ⇒ default
   }
+  def getOrElse[B >: A](default: ⇒ B): B =
+    this.orElse(Some(default)).asInstanceOf[Some[B]].get
 
 }
 

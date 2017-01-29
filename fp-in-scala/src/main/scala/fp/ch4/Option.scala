@@ -30,6 +30,8 @@ sealed trait Option[+A] {
     case Some(x) if f(x) ⇒ this
     case _               ⇒ None
   }
+  def filter(f: A ⇒ Boolean): Option[A] =
+    this.flatMap { x ⇒ if (f(x)) Some(x) else None }
 
 }
 

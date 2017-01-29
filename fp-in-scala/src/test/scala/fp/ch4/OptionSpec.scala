@@ -72,4 +72,12 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  describe("filterPM") {
+    it("filters, no patmat, flatMappin' that shit") {
+      assert(Some(6).filter(even) === Some(6))
+      assert(Some(5).filter(even) === None)
+      assert(None   .filter(even) === None)
+    }
+  }
+
 }

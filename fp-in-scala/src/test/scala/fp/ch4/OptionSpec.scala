@@ -85,7 +85,13 @@ class OptionSpec extends FunSpec {
       assert(Option.lift(even)(Some(-8)) === Some(true))
       assert(Option.lift(even)(Some(15)) === Some(false))
       assert(Option.lift(even)(None)     === None)
+    }
+  }
 
+  describe("Try") {
+    it("tries very hard") {
+      assert(Option.Try(1 / 0) === None)
+      assert(Option.Try(4 / 2) === Some(2))
     }
   }
 

@@ -95,4 +95,15 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  def rep(n: Int, s: String): List[String] = List.fill(n)(s)
+
+  describe("map2") {
+    it("returns some result iff both arguments are defined") {
+      assert(Option.map2(None,    None     )(rep) === None)
+      assert(Option.map2(Some(3), None     )(rep) === None)
+      assert(Option.map2(None,    Some("x"))(rep) === None)
+      assert(Option.map2(Some(3), Some("x"))(rep) === Some(List("x", "x", "x")))
+    }
+  }
+
 }

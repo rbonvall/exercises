@@ -23,4 +23,21 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  case class Fraction(num: Int, den: Int)
+  implicit class IntToFrac(n: Int) {
+    def ÷(d: Int) = new Fraction(n, d)
+  }
+
+  def invert(q: Fraction): Option[Fraction] =
+    if (q.num == 0) None
+    else            Some(Fraction(q.den, q.num))
+
+  describe("flatMapPM") {
+    it("flatMaps using pattern matching") {
+      assert(Some(3 ÷ 2).flatMapPM(invert) === Some(2 ÷ 3))
+      assert(Some(0 ÷ 3).flatMapPM(invert) === None)
+      assert(None       .flatMapPM(invert) === None)
+    }
+  }
+
 }

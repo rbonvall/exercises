@@ -19,6 +19,11 @@ sealed trait Option[+A] {
   def flatMap[B](f: A ⇒ Option[B]): Option[B] =
     this.map(f).orElse(Some(None)).asInstanceOf[Some[Option[B]]].get
 
+  def getOrElsePM[B >: A](default: ⇒ B): B = this match {
+    case Some(x) ⇒ x
+    case None    ⇒ default
+  }
+
 }
 
 case class  Some[+A](get: A) extends Option[A]

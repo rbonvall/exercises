@@ -48,4 +48,11 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  describe("getOrElsePM") {
+    it("gets the value or else the default value using pattern matching") {
+      assert(Some(5).getOrElsePM(6) === 5)
+      assert(None   .getOrElsePM(6) === 6)
+    }
+  }
+
 }

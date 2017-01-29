@@ -62,4 +62,14 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  def even(n: Int): Boolean = n % 2 == 0
+
+  describe("filterPM") {
+    it("filters à la patmat") {
+      assert(Some(6).filterPM(even) === Some(6))
+      assert(Some(5).filterPM(even) === None)
+      assert(None   .filterPM(even) === None)
+    }
+  }
+
 }

@@ -26,6 +26,11 @@ sealed trait Option[+A] {
   def getOrElse[B >: A](default: ⇒ B): B =
     this.orElse(Some(default)).asInstanceOf[Some[B]].get
 
+  def filterPM(f: A ⇒ Boolean): Option[A] = this match {
+    case Some(x) if f(x) ⇒ this
+    case _               ⇒ None
+  }
+
 }
 
 case class  Some[+A](get: A) extends Option[A]

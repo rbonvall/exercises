@@ -415,6 +415,12 @@
                  (food      tastes good))))
 
   (check-equal? (lookup-in-table 'entrée env (λ (x) #f)) 'spaghetti)
+
+  (check-equal? (*const 41 '()) 41)
+  (check-equal? (*const #t '()) #t)
+  (check-equal? (*const #f '()) #f)
+  (check-equal? (*const 'a '()) '(primitive a))
+
 )
 
 (displayln ":)")

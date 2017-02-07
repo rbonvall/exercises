@@ -414,7 +414,8 @@
                 ((appetizer entrée beverage)
                  (food      tastes good))))
 
-  (check-equal? (lookup-in-table 'entrée env (λ (x) #f)) 'spaghetti)
+  (check-equal? (lookup-in-table 'entrée   env (λ (x) #f)) 'spaghetti)
+  (check-equal? (lookup-in-table 'beverage env (λ (x) #f)) 'good)
 
   (check-equal? (*const 41 '()) 41)
   (check-equal? (*const #t '()) #t)
@@ -422,6 +423,9 @@
   (check-equal? (*const 'a '()) '(primitive a))
 
   (check-equal? (*quote '(quote a) '()) 'a)
+
+  (check-equal? (*identifier 'entrée   env) 'spaghetti)
+  (check-equal? (*identifier 'beverage env) 'good)
 )
 
 (displayln ":)")

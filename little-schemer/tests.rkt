@@ -421,6 +421,7 @@
   (check-equal? (*const #f '()) #f)
   (check-equal? (*const 'a '()) '(primitive a))
 
+  (check-equal? (*quote '(quote a) '()) 'a)
 )
 
 (displayln ":)")

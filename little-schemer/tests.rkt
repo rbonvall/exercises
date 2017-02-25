@@ -416,7 +416,7 @@
 
   (check-equal? (lookup-in-table 'snack    env (λ (x) #f)) #f)
   (check-equal? (lookup-in-table 'entrée   env (λ (x) #f)) 'spaghetti)
-;  (check-equal? (lookup-in-table 'beverage env (λ (x) #f)) 'good)
+  (check-equal? (lookup-in-table 'beverage env (λ (x) #f)) 'good)
 
   (check-equal? (*const 41 '()) 41)
   (check-equal? (*const #t '()) #t)

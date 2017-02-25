@@ -819,7 +819,7 @@
     [else
      (lookup-in-entry name
                       (car table)
-                      (λ (n) (lookup-in-entry n (cdr table) table-f)))]))
+                      (λ (n) (lookup-in-table n (cdr table) table-f)))]))
 
 ; Types: *const, *quote, *identifier, *lambda, *cond, *application.
 ; We'll represent types as functions. We call them "actions."

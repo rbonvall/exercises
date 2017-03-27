@@ -428,6 +428,8 @@
   (check-equal? (*identifier 'entrée   env) 'spaghetti)
   (check-equal? (*identifier 'beverage env) 'good)
 
+  (check-equal? (*lambda '(lambda (x) (* 2 x)) env) `(non-primitive (,env (x) (* 2 x))))
+
 ; (let ([e     '(cond (coffee klatsch) (else party))]
 ;       [table '(((coffee) (#t))
 ;                ((klatsch party) (5 (6))))])

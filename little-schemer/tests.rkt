@@ -426,7 +426,7 @@
   (check-equal? (*quote '(quote a) '()) 'a)
 
   (check-equal? (*identifier 'entrée   env) 'spaghetti)
-;  (check-equal? (*identifier 'beverage env) 'good)
+  (check-equal? (*identifier 'beverage env) 'good)
 
 ; (let ([e     '(cond (coffee klatsch) (else party))]
 ;       [table '(((coffee) (#t))

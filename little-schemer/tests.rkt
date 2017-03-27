@@ -430,6 +430,9 @@
 
   (check-equal? (*lambda '(lambda (x) (* 2 x)) env) `(non-primitive (,env (x) (* 2 x))))
 
+  (check-equal? (*cond '(cond (#t 1) (else 2)) env) 1)
+  (check-equal? (*cond '(cond (#f 1) (else 2)) env) 2)
+
 ; (let ([e     '(cond (coffee klatsch) (else party))]
 ;       [table '(((coffee) (#t))
 ;                ((klatsch party) (5 (6))))])

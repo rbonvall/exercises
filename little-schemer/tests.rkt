@@ -435,13 +435,6 @@
 
   (check-equal? (*application '(car (quote (99 88 77))) env) 99)
   (check-equal? (*application '(zero? x) '(((x) (9)))) #f)
-  (check-equal? (*application '(zero? x) '(((x) (0)))) #t)
-
-; (let ([e     '(cond (coffee klatsch) (else party))]
-;       [table '(((coffee) (#t))
-;                ((klatsch party) (5 (6))))])
-;   (check-equal? (*cond e table) 'klatsch))
-
-)
+  (check-equal? (*application '(zero? x) '(((x) (0)))) #t))
 
 (displayln ":)")

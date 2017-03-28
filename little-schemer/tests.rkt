@@ -433,6 +433,10 @@
   (check-equal? (*cond '(cond (#t 1) (else 2)) env) 1)
   (check-equal? (*cond '(cond (#f 1) (else 2)) env) 2)
 
+  (check-equal? (*application '(car (quote (99 88 77))) env) 99)
+  (check-equal? (*application '(zero? x) '(((x) (9)))) #f)
+  (check-equal? (*application '(zero? x) '(((x) (0)))) #t)
+
 ; (let ([e     '(cond (coffee klatsch) (else party))]
 ;       [table '(((coffee) (#t))
 ;                ((klatsch party) (5 (6))))])

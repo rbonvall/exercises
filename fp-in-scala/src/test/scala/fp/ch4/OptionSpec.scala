@@ -106,4 +106,12 @@ class OptionSpec extends FunSpec {
     }
   }
 
+  describe("sequence") {
+    it("combines a list of options into one option") {
+      assert(Option.sequence(List(Some(1), Some(2), Some(3))) === Some(List(1, 2, 3)))
+      assert(Option.sequence(List(Some(1), None,    Some(3))) === Some(None))
+      assert(Option.sequence(Nil) === Some(Nil))
+    }
+  }
+
 }

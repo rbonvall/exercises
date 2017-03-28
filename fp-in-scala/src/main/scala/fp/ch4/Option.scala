@@ -47,4 +47,8 @@ object Option {
     x ← a
     y ← b
   } yield f(x, y)
+
+  // Exercise 4.4
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
+
 }

@@ -1,22 +1,25 @@
 package tapl.fulluntyped
 
+/** Ordinary lambda term (with named variables). */
 sealed trait Term {
   def $(t: Term) = App(this, t)
 }
 object Term {
-  implicit def symToVar(x: Symbol): Var = Var(x)
+  /** Syntactic sugar for lambda abstractions. */
   def λ(x: Symbol, xs: Symbol*)(body: Term) =
     Abs(x, xs.foldRight (body) { (x, acc) ⇒ Abs(x, acc) })
+  implicit def symToVar(x: Symbol): Var = Var(x)
 }
 case class Var(name: Symbol)       extends Term
 case class Abs(v: Var, body: Term) extends Term
 case class App(f: Term, arg: Term) extends Term
 
-
+/** Nameless lambda term (uses de Bruĳn indices for variables). */
 sealed trait NamelessTerm {
   def $(t: NamelessTerm) = NApp(this, t)
 }
 object NamelessTerm {
+  /** Syntactic sugar for nameless lambda abstractions. */
   def λĳ(body: NamelessTerm) = NAbs(body)
   implicit def intToIndex(i: Int): Index = Index(i)
 }
@@ -27,6 +30,7 @@ case class NApp(fn: NamelessTerm, arg: NamelessTerm) extends NamelessTerm
 
 object DeBruĳn {
 
+  /** [Exercise 6.1.5-1] */
   def removeNames(Γ: List[Symbol], t: Term): NamelessTerm =
     t match {
       case Var(x)         ⇒ Index(Γ indexOf x)
@@ -34,6 +38,7 @@ object DeBruĳn {
       case App(f, t)      ⇒ NApp(removeNames(Γ, f), removeNames(Γ, t))
     }
 
+  /** [Exercise 6.1.5-2] */
   def restoreNames(Γ: List[Symbol], nt: NamelessTerm): Term =
     nt match {
       case Index(i)   ⇒ Var(Γ(i))

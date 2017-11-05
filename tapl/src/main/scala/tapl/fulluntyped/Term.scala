@@ -55,4 +55,12 @@ object DeBruĳn {
     Stream.from(1).map { i ⇒ Symbol(s"x$i") }
   ).flatten
 
+  /** Returns the d-place shift of a nameless term above cutoff c. */
+  def shift(d: Int, c: Int = 0)(nt: NamelessTerm): NamelessTerm =
+    nt match {
+      case Index(k)   ⇒ Index(if (k < c) k else k + d)
+      case NAbs(t)    ⇒ NAbs(shift(d, c + 1)(nt))
+      case NApp(f, t) ⇒ NApp(shift(d, c)(f), shift(d, c)(t))
+    }
+
 }

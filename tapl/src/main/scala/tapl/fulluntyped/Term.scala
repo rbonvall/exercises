@@ -34,4 +34,25 @@ object DeBruĳn {
       case App(f, t)      ⇒ NApp(removeNames(Γ, f), removeNames(Γ, t))
     }
 
+  def restoreNames(Γ: List[Symbol], nt: NamelessTerm): Term =
+    nt match {
+      case Index(i)   ⇒ Var(Γ(i))
+      case NApp(f, t) ⇒ App(restoreNames(Γ, f), restoreNames(Γ, t))
+      case NAbs(t) ⇒
+        val x = newVariable(Γ)
+        Abs(x, restoreNames(x :: Γ, t))
+    }
+
+  /** Returns a variable name that is not in the naming context. */
+  def newVariable(Γ: List[Symbol]): Symbol =
+    varNames.find { !Γ.contains(_) }.get
+
+  private val allLetters = (('x' to 'z') ++ ('a' to 'w')).toStream
+  private def sym(c: Char) = Symbol(c.toString)
+  private val varNames: Stream[Symbol] = Stream(
+    allLetters.map(sym),
+    allLetters.map(_.toUpper).map(sym),
+    Stream.from(1).map { i ⇒ Symbol(s"x$i") }
+  ).flatten
+
 }

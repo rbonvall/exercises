@@ -33,13 +33,42 @@ class TermSpec extends FunSpec {
   }
 
   describe("removeNames") {
-    it("removes names") {
+    it("converts an ordinaty term into its nameless representation") {
       val nameful  = λ('x, 'y) { 'x $ ('x $ 'y) } $ λ('x) { 'a $ 'x }
       val nameless = λĳ { λĳ { 1 $ (1 $ 0)  }} $ λĳ { 1 $ 0 }
       val result = removeNames(List('a), nameful)
       assert(result === nameless)
     }
   }
+
+  describe("restoreNames") {
+    it("converts a nameless term into a ordinary term with fresh variables") {
+      val nameless = λĳ { λĳ { 1 $ (1 $ 0)  }} $ λĳ { 1 $ 0 }
+      val nameful  = λ('x, 'y) { 'x $ ('x $ 'y) } $ λ('x) { 'a $ 'x }
+      val result = restoreNames(List('a), nameless)
+      assert(result === nameful)
+    }
+  }
+
+  describe("newVariable") {
+    it("returns a variable name that's not present in the given naming context") {
+      assert(newVariable(Nil) === 'x)
+      assert(newVariable(List('a)) === 'x)
+      assert(newVariable(List('x)) === 'y)
+      assert(newVariable(List('b, 'a, 'x, 'z, 'y)) === 'c)
+    }
+    it("returns uppercase names when it runs out of lowercase names") {
+      val all = ('a' to 'z').map { c ⇒ Symbol(c.toString) }.toList
+      assert(newVariable(all) === 'X)
+      assert(newVariable('X :: all) === 'Y)
+    }
+    it("returns indexed variables when it runs out of letters") {
+      val all = (('a' to 'z') ++ ('A' to 'Z')).map { c ⇒ Symbol(c.toString) }.toList
+      assert(newVariable(all) === 'x1)
+      assert(newVariable('x1 :: all) === 'x2)
+    }
+  }
+
 }
 
 

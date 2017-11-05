@@ -45,7 +45,7 @@ object DeBruĳn {
 
   /** Returns a variable name that is not in the naming context. */
   def newVariable(Γ: List[Symbol]): Symbol =
-    varNames.find { !Γ.contains(_) }.get
+    varNames.find { n ⇒ !Γ.contains(n) }.get
 
   private val allLetters = (('x' to 'z') ++ ('a' to 'w')).toStream
   private def sym(c: Char) = Symbol(c.toString)

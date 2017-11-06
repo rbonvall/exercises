@@ -9,7 +9,7 @@ object Term {
   case class  Pred  (t: Term) extends Term
   case class  IsZero(t: Term) extends Term
   case class  Cond( `if`: Term
-                  , then: Term
+                  , `then`: Term
                   , `else`: Term) extends Term
 
   def S(i: Int): Set[Term] =

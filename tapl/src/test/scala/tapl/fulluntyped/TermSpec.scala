@@ -1,5 +1,4 @@
 package tapl.fulluntyped
-package tapl.fulluntyped
 
 import org.scalatest.FunSpec
 

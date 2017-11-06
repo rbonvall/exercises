@@ -56,7 +56,7 @@ object DeBruĳn {
 
   private val allLetters = (('x' to 'z') ++ ('a' to 'w')).toStream
   private def sym(c: Char) = Symbol(c.toString)
-  private val varNames: Stream[Symbol] = Stream(
+  val varNames: Stream[Symbol] = Stream(
     allLetters.map(sym),
     allLetters.map(_.toUpper).map(sym),
     Stream.from(1).map { i ⇒ Symbol(s"x$i") }

@@ -42,8 +42,10 @@ class TermSpec extends FunSpec {
 
   describe("restoreNames") {
     it("converts a nameless term into a ordinary term with fresh variables") {
+      val x = varNames(0)
+      val y = varNames(1)
       val nameless = λĳ { λĳ { 1 $ (1 $ 0)  }} $ λĳ { 1 $ 0 }
-      val nameful  = λ('x, 'y) { 'x $ ('x $ 'y) } $ λ('x) { 'a $ 'x }
+      val nameful  = λ(x, y) { x $ (x $ y) } $ λ(x) { 'a $ x }
       val result = restoreNames(List('a), nameless)
       assert(result === nameful)
     }

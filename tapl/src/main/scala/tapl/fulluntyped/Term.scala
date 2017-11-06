@@ -1,5 +1,7 @@
 package tapl.fulluntyped
 
+import scala.language.implicitConversions
+
 /** Ordinary lambda term (with named variables). */
 sealed trait Term {
   def $(t: Term) = App(this, t)

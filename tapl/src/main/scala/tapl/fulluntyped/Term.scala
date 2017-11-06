@@ -66,7 +66,7 @@ object DeBruĳn {
   def shift(d: Int, c: Int = 0)(nt: NamelessTerm): NamelessTerm =
     nt match {
       case Index(k)   ⇒ Index(if (k < c) k else k + d)
-      case NAbs(t)    ⇒ NAbs(shift(d, c + 1)(nt))
+      case NAbs(t)    ⇒ NAbs(shift(d, c + 1)(t))
       case NApp(f, t) ⇒ NApp(shift(d, c)(f), shift(d, c)(t))
     }
 

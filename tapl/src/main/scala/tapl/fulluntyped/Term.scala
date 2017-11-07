@@ -74,4 +74,13 @@ object DeBruĳn {
       case NApp(f, t) ⇒ NApp(shift(d, c)(f), shift(d, c)(t))
     }
 
+  /** Substitutes term s for variable with indice j in the term nt. */
+  def subst(j: Int, s: NamelessTerm)(nt: NamelessTerm): NamelessTerm =
+    nt match {
+      case     Index(k) if k == j ⇒ s
+      case i @ Index(_)           ⇒ i
+      case NAbs(t)    ⇒ NAbs(subst(j + 1, shift(1)(s))(t))
+      case NApp(f, t) ⇒ NApp(subst(j, s)(f), subst(j, s)(t))
+    }
+
 }

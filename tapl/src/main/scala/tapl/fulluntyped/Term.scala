@@ -2,32 +2,36 @@ package tapl.fulluntyped
 
 import scala.language.implicitConversions
 
+
 /** Ordinary lambda term (with named variables). */
 sealed trait Term {
   def $(t: Term) = App(this, t)
 }
+case class Var(name: Symbol)       extends Term
+case class Abs(v: Var, body: Term) extends Term
+case class App(f: Term, arg: Term) extends Term
+
 object Term {
   /** Syntactic sugar for lambda abstractions. */
   def λ(x: Symbol, xs: Symbol*)(body: Term) =
     Abs(x, xs.foldRight (body) { (x, acc) ⇒ Abs(x, acc) })
   implicit def symToVar(x: Symbol): Var = Var(x)
 }
-case class Var(name: Symbol)       extends Term
-case class Abs(v: Var, body: Term) extends Term
-case class App(f: Term, arg: Term) extends Term
+
 
 /** Nameless lambda term (uses de Bruĳn indices for variables). */
 sealed trait NamelessTerm {
   def $(t: NamelessTerm) = NApp(this, t)
 }
+case class Index(i: Int) extends NamelessTerm
+case class NAbs(body: NamelessTerm) extends NamelessTerm
+case class NApp(fn: NamelessTerm, arg: NamelessTerm) extends NamelessTerm
+
 object NamelessTerm {
   /** Syntactic sugar for nameless lambda abstractions. */
   def λĳ(body: NamelessTerm) = NAbs(body)
   implicit def intToIndex(i: Int): Index = Index(i)
 }
-case class Index(i: Int) extends NamelessTerm
-case class NAbs(body: NamelessTerm) extends NamelessTerm
-case class NApp(fn: NamelessTerm, arg: NamelessTerm) extends NamelessTerm
 
 
 object DeBruĳn {

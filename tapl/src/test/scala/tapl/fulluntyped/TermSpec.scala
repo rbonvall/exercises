@@ -46,7 +46,7 @@ class TermSpec extends FunSpec {
   }
 
   describe("removeNames") {
-    it("converts an ordinaty term into its nameless representation") {
+    it("converts an ordinary term into its nameless representation") {
       val nameful  = λ('x, 'y) { 'x $ ('x $ 'y) } $ λ('x) { 'a $ 'x }
       val nameless = λĳ { λĳ { 1 $ (1 $ 0)  }} $ λĳ { 1 $ 0 }
       val result = removeNames(List('a), nameful)

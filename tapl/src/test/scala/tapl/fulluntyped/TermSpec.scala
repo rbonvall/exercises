@@ -22,6 +22,20 @@ class TermSpec extends FunSpec {
     }
   }
 
+  describe("$") {
+    it("creates applications") {
+      assert(('a $ 'b) === App('a, 'b))
+      assert(( 1 $  2) === NApp(1, 2))
+    }
+    it("is left-associative") {
+      val unparenthesed =  'a $  'b  $ 'c
+      val left          = ('a $  'b) $ 'c
+      val right         =  'a $ ('b  $ 'c)
+      assert(unparenthesed === left)
+      assert(unparenthesed !== right)
+    }
+  }
+
   describe("λĳ") {
     it("creates nameless abstractions") {
       val body = NApp(Index(1), NApp(Index(0), Index(1)))

@@ -85,16 +85,16 @@ class TermSpec extends FunSpec {
   }
 
   describe("shift") {
-    ignore("works for exercise 6.2.2-1") {
-      val term = λĳ { λĳ { 1 $ (0 $ 2)}}
+    it("works for exercise 6.2.2-1") {
+      val term     = λĳ { λĳ { 1 $ (0 $ 2) }}
+      val expected = λĳ { λĳ { 1 $ (0 $ 4) }}
       val result = shift(2)(term)
-      val expected = ???
       assert(result === expected)
     }
-    ignore("works for exercise 6.2.2-2") {
-      val term = λĳ { 0 $ 1 $ λĳ { 0 $ 1 $ 2 }}
+    it("works for exercise 6.2.2-2") {
+      val term     = λĳ { 0 $ 1 $ λĳ { 0 $ 1 $ 2 }}
+      val expected = λĳ { 0 $ 3 $ λĳ { 0 $ 1 $ 4 }}
       val result = shift(2)(term)
-      val expected = ???
       assert(result === expected)
     }
   }

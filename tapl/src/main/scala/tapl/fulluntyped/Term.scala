@@ -39,10 +39,6 @@ object NamelessTerm {
   /** Syntactic sugar for nameless lambda abstractions. */
   def λĳ(body: NamelessTerm) = NAbs(body)
   implicit def intToIndex(i: Int): Index = Index(i)
-}
-
-
-object DeBruĳn {
 
   /** [Exercise 6.1.5-1] */
   def removeNames(Γ: List[Symbol], t: Term): NamelessTerm =

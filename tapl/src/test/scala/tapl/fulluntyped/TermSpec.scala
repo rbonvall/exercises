@@ -3,9 +3,8 @@ package tapl.fulluntyped
 import org.scalatest.FunSpec
 
 class TermSpec extends FunSpec {
-  import DeBruĳn._
-  import Term.{λ, symToVar}
-  import NamelessTerm.{λĳ, intToIndex}
+  import Term._
+  import NamelessTerm._
 
   describe("λ") {
     it("creates abstractions") {
@@ -97,6 +96,26 @@ class TermSpec extends FunSpec {
       val result = shift(2)(term)
       assert(result === expected)
     }
+  }
+
+  describe("nameless substitution") {
+    val Γ = List('b, 'a)
+
+    it("corresponds to substitution of ordinary terms (exercise 6.2.5-1)") {
+      val term = 'b $ λ('x, 'y) { 'b }
+      val s1 = Term.subst('b, 'a)(term)
+      val s2 = NamelessTerm.subst(0, 1)(removeNames(Γ, term))
+      assert(restoreNames(Γ, s2) === s1)
+    }
+
+    /* TODO: fix */
+    ignore("corresponds to substitution of ordinary terms (exercise 6.2.5-2)") {
+      val term = 'b $ λ('x) { 'b }
+      val s1 = Term.subst('b, 'a $ λ('z) { 'a })(term)
+      val s2 = NamelessTerm.subst(0, 1 $ λĳ { 2 })(removeNames(Γ, term))
+      assert(restoreNames(Γ, s2) === s1)
+    }
+
   }
 
 }

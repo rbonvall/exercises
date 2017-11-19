@@ -16,6 +16,14 @@ object Term {
   def λ(x: Symbol, xs: Symbol*)(body: Term) =
     Abs(x, xs.foldRight (body) { (x, acc) ⇒ Abs(x, acc) })
   implicit def symToVar(x: Symbol): Var = Var(x)
+
+  def subst(x: Symbol, s: Term)(t: Term): Term =
+    t match {
+      case     Var(y) if y == x ⇒ s
+      case v @ Var(_)           ⇒ v
+      case App(t1, t2) ⇒ subst(x, s)(t1) $ subst(x, s)(t2)
+      case Abs(Var(v), t) ⇒ λ(v) { subst(x, s)(t) }
+    }
 }
 
 

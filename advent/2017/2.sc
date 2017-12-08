@@ -32,5 +32,13 @@ val matrix = input
 
 def rowDifference(row: Vector[Int]) = row.max - row.min
 
-println(matrix.map { row ⇒ row.max - row.min }.sum)
+def quotientOfDivisibles(row: Vector[Int]): Int =
+  row.tail
+    .find { row.head % _ == 0 }
+    .map  { row.head / _ }
+    .getOrElse(quotientOfDivisibles(row.tail))
+
+println(matrix.map(rowDifference).sum)
+
+println(matrix.map(_.sorted.reverse).map(quotientOfDivisibles).sum)
 

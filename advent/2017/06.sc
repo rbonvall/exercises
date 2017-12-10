@@ -1,3 +1,5 @@
+// vim: ft=scala
+
 def argmax(banks: Seq[Int]) = banks.zipWithIndex.maxBy(_._1)._2
 
 assert(argmax(Seq(22, 11, 33, 77, 44, 77, 55)) == 3)

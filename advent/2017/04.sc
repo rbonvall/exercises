@@ -1,3 +1,5 @@
+// vim: ft=scala
+
 val input = """
   |una bokpr ftz ryw nau yknf fguaczl anu
   |tvay wvco bcoblpt fwzg sfsys zvuqll mcbhwz ovcw fgdy

@@ -42,7 +42,7 @@ examples foreach { case (input, expectedScore) =>
 
 }
 
-val input = scala.io.Source .fromFile("9.txt").getLines.toVector
+val input = scala.io.Source .fromFile("09.txt").getLines.toVector
 
 println( input.map(score).sum )
 

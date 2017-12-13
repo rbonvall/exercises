@@ -7,7 +7,7 @@ def lineToInstruction(line: String) = {
   Instruction(parts(0), parts(1), parts(2).toInt, parts(4), parts(5), parts(6).toInt)
 }
 
-val input = scala.io.Source.fromFile("8.txt").getLines.map(lineToInstruction).toStream
+val input = scala.io.Source.fromFile("08.txt").getLines.map(lineToInstruction).toStream
 
 val initialState = Map.empty[String, Int] withDefaultValue 0
 

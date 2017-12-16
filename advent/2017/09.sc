@@ -5,8 +5,6 @@ def normalize(input: String) =
     .replaceAll("[!].", "")
     .replaceAll("<[^>]*>", "")
 
-
-
 val examples = List(
   "{}" -> 1
 , "{{{}}}" -> 6
@@ -46,3 +44,42 @@ val input = scala.io.Source .fromFile("09.txt").getLines.toVector
 
 println( input.map(score).sum )
 
+case class CountState(garbageCount: Int, inGarbage: Boolean, escaped: Boolean) {
+  def incCount     = copy(garbageCount = garbageCount + 1)
+  def enterGarbage = copy(inGarbage = true)
+  def exitGarbage  = copy(inGarbage = false)
+  def enterEscaped = copy(escaped = true)
+  def exitEscaped  = copy(escaped = false)
+}
+object CountState { val initial = CountState(0, false, false) }
+
+def countGarbage(input: String) = {
+  input.foldLeft (CountState.initial) { (s, char) =>
+    char match {
+      case _   if  s.escaped   => s.exitEscaped
+      case '!'                 => s.enterEscaped
+      case '<' if !s.inGarbage => s.enterGarbage
+      case '>' if  s.inGarbage => s.exitGarbage
+      case _   if  s.inGarbage => s.incCount
+      case _                   => s
+    }
+  }.garbageCount
+}
+
+println(input.map(countGarbage).sum)
+
+val countExamples = List(
+   """<>"""                  -> 0
+,  """<random characters>""" -> 17
+,  """<<<<>"""               -> 3
+,  """<{!>}>"""              -> 2
+,  """<!!>"""                -> 0
+,  """<!!!>>"""              -> 0
+,  """<{o"i!a,<{i<a>"""   -> 10
+)
+
+countExamples.foreach { case (input, expectedCount) =>
+  val count = countGarbage(input)
+  //println(Seq(expectedCount, count, input) mkString "\t")
+  assert(count == expectedCount)
+}

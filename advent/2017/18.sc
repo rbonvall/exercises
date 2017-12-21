@@ -91,6 +91,9 @@ def showState(s: State): String = {
 //  s = s.next.get
 //}
 
-Stream.iterate(Option(initialState))(_.flatMap(_.next)).takeWhile(_.isDefined)
+Stream.iterate(Option(initialState)) { _.flatMap(_.next) }
+  .takeWhile(_.isDefined)
   .filter { s ⇒ s.exists(_.currentInstruction.exists(_.startsWith("rcv"))) }
-    .take(10).toList foreach println
+  .take(10)
+  .toList foreach println
+

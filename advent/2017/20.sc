@@ -59,22 +59,46 @@ assert(
   )
 )
 
+def limit[T](convergenceRunLength: Int)(it: Iterator[T]): T =
+  iteratorWithRunLength(it)
+    .collect { case (n, l) if l == convergenceRunLength ⇒ n }
+    .next
+
 // Part 1
-val states: Iterator[Seq[(Particle, Int)]] =
+
+val statesOfIndexedParticles: Iterator[Seq[(Particle, Int)]] =
   Iterator.iterate(input.zipWithIndex) { particlesWithIndex ⇒
     particlesWithIndex.map { case (particle, i) ⇒ (particle.next, i) }
   }
 
-val closestParticle: Iterator[Int] = states.map { particlesWithIndex ⇒
-  val (particle, index) = particlesWithIndex.minBy(_._1.p.distToOrigin)
-  index
+val closestParticle: Iterator[Int] =
+  statesOfIndexedParticles.map { particlesWithIndex ⇒
+    val (particle, index) = particlesWithIndex.minBy(_._1.p.distToOrigin)
+    index
+  }
+
+println(limit(1000)(closestParticle))
+
+// Part 2
+
+def count[T](ts: Seq[T]): Map[T, Int] = {
+  val initial = Map.empty[T, Int] withDefaultValue 0
+  ts.foldLeft (initial) { case (cnt, t) ⇒
+    cnt.updated(t, cnt(t) + 1)
+  }
 }
 
-// I'll assume a run length of 1000 indicates convergence.
-println(
-  iteratorWithRunLength(closestParticle)
-    .collect { case (n, 1000) ⇒ n }
-    .next
-)
+assert(count("abbabacdad") == Map('a' → 4, 'b' → 3, 'c' → 1, 'd' → 2))
 
+def destroyColliding(ps: Seq[Particle]): Seq[Particle] = {
+  val positionCount = count(ps.map(_.p))
+  ps.filter { p ⇒ positionCount(p.p) == 1 }
+}
+
+val states: Iterator[Seq[Particle]] =
+  Iterator.iterate(input: Seq[Particle]) {
+    ps ⇒ destroyColliding(ps.map(_.next))
+  }
+
+println(limit(1000)(states.map(_.length)))
 

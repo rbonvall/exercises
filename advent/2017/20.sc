@@ -4,6 +4,7 @@ import math.abs
 
 case class Point(x: Int, y: Int, z: Int) {
   def distToOrigin = abs(x) + abs(y) + abs(z)
+  def + (δ: Point) = Point(x + δ.x, y + δ.y, z + δ.z)
 }
 
 case class Particle(p: Point, v: Point, a: Point) {

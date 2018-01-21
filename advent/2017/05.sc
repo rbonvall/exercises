@@ -18,13 +18,20 @@ case class State(pos: Int, jumps: Seq[Int]) {
 val example = State(0, Vector(0, 3, 0, 1, -3))
 val input   = State(0, jumps)
 
-Stream.iterate(example)(_.next).takeWhile(_.valid).toList foreach println
+Stream.iterate(example)(_.next)
+  .takeWhile(_.valid)
+  .toList
+  .foreach(println)
 
 println(
-  Stream.iterate(State(0, jumps))(_.next).takeWhile(_.valid).length
+  Stream.iterate(input)(_.next)
+    .takeWhile(_.valid)
+    .length
 )
 
 println(
-  Stream.iterate(State(0, jumps))(_.strangeNext).takeWhile(_.valid).length
+  Stream.iterate(input)(_.strangeNext)
+    .takeWhile(_.valid)
+    .length
 )
 

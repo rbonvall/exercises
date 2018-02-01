@@ -1,99 +1,119 @@
 // vim: ft=scala
 
-val input: IndexedSeq[Seq[String]] =
-  """set i 31
-    |set a 1
-    |mul p 17
-    |jgz p p
-    |mul a 2
-    |add i -1
-    |jgz i -2
-    |add a -1
-    |set i 127
-    |set p 680
-    |mul p 8505
-    |mod p a
-    |mul p 129749
-    |add p 12345
-    |mod p a
-    |set b p
-    |mod b 10000
-    |snd b
-    |add i -1
-    |jgz i -9
-    |jgz a 3
-    |rcv b
-    |jgz b -1
-    |set f 0
-    |set i 126
-    |rcv a
-    |rcv b
-    |set p a
-    |mul p -1
-    |add p b
-    |jgz p 4
-    |snd a
-    |set a b
-    |jgz 1 3
-    |snd b
-    |set f 1
-    |add i -1
-    |jgz i -11
-    |snd a
-    |jgz f -16
-    |jgz a -19""".stripMargin.trim.lines.toIndexedSeq.map(_.trim.split("\\s+").toVector)
+trait Ref { def repr: String }
+case class Literal (value: Long)  extends Ref { val repr = value.toString }
+case class Register(name: Symbol) extends Ref { val repr = name.name }
 
-val registers = Map.empty[Char, Int] withDefaultValue 0
+import language.implicitConversions
+implicit def intToLit(i: Long  ): Ref = Literal(i)
+implicit def symToReg(s: Symbol): Ref = Register(s)
 
-object Int {
-  def unapply(s: String) = scala.util.Try(s.toInt).toOption
-}
-object Reg {
-  val regs = 'a' to 'z'
-  def unapply(s: String) = if (s.length == 1 && regs.contains(s.head)) Some(s.head) else None
-}
-
-case class State(registers: Map[Char, Int],
-                 instructions: IndexedSeq[Seq[String]],
-                 pc: Int = 0,
-                 lastFreq: Option[Int] = None) {
-
-  def valOf(s: String): Int = Int.unapply(s) getOrElse registers(s.head)
-
-  def reg(c: Char)(f: Int ⇒ Int) = copy(registers = registers.updated(c, f(registers(c))), pc = pc + 1)
-  def play(freq: Int) = copy(lastFreq = Some(freq), pc = pc + 1)
-
-  val currentInstruction = instructions.lift(pc)
-  def next: Option[State] = currentInstruction map {
-    case Seq("snd", x)          ⇒ play(valOf(x))
-    case Seq("set", Reg(r), y)  ⇒ reg(r) { _ ⇒ valOf(y) }
-    case Seq("add", Reg(r), y)  ⇒ reg(r) { _ + valOf(y) }
-    case Seq("mul", Reg(r), y)  ⇒ reg(r) { _ * valOf(y) }
-    case Seq("mod", Reg(r), y)  ⇒ reg(r) { n ⇒ ((n % valOf(y)) + valOf(y)) % valOf(y) }
-    case Seq("rcv", x)          ⇒ copy(pc = pc + 1)
-    case Seq("jgz", x, offset)  ⇒ if (valOf(x) > 0) copy(pc = pc + valOf(offset))
-                                  else copy(pc = pc + 1)
-    case _ ⇒ ???
+trait Instruction {
+  override def toString = this match {
+    case Set(reg, value)  ⇒ s"set ${reg.name} ${value.repr}"
+    case Add(reg, value)  ⇒ s"add ${reg.name} ${value.repr}"
+    case Mod(reg, value)  ⇒ s"mod ${reg.name} ${value.repr}"
+    case Mul(reg, value)  ⇒ s"mul ${reg.name} ${value.repr}"
+    case Jgz(cond, value) ⇒ s"jgz ${cond.repr} ${value.repr}"
+    case Snd(value)       ⇒ s"snd ${value.repr}"
+    case Rcv(value)       ⇒ s"rcv ${value.repr}"
   }
 }
-val initialState = State(Map.empty withDefaultValue 0, input, 0, None)
+case class Set(reg: Symbol, value: Ref) extends Instruction
+case class Add(reg: Symbol, value: Ref) extends Instruction
+case class Mod(reg: Symbol, value: Ref) extends Instruction
+case class Mul(reg: Symbol, value: Ref) extends Instruction
+case class Jgz(cond: Ref, value: Ref) extends Instruction
+case class Snd(value: Ref) extends Instruction
+case class Rcv(value: Ref) extends Instruction
 
-def showState(s: State): String = {
-  s.registers
-    .map { case (k, v) ⇒ s"$k: $v" }
-    .mkString(",")
-    .++(s" ${s.currentInstruction.map(_.mkString(" "))} ${s.lastFreq}")
+val input: IndexedSeq[Instruction] = Vector(
+  Set('I,  31),
+  Set('A,   1),
+  Mul('P,  17),
+  Jgz('P,  'P),
+  Mul('A,   2),
+  Add('I,  -1),
+  Jgz('I,  -2),
+  Add('A,  -1),
+  Set('I, 127),
+  Set('P, 680),
+  Mul('P,   8505),
+  Mod('P,  'A),
+  Mul('P, 129749),
+  Add('P,  12345),
+  Mod('P,  'A),
+  Set('B,  'P),
+  Mod('B,  10000),
+  Snd('B),
+  Add('I,  -1),
+  Jgz('I,  -9),
+  Jgz('A,   3),
+  Rcv('B),
+  Jgz('B,  -1),
+  Set('F,   0),
+  Set('I, 126),
+  Rcv('A),
+  Rcv('B),
+  Set('P,  'A),
+  Mul('P,  -1),
+  Add('P,  'B),
+  Jgz('P,   4),
+  Snd('A),
+  Set('A,  'B),
+  Jgz( 1,   3),
+  Snd('B),
+  Set('F,   1),
+  Add('I,  -1),
+  Jgz('I, -11),
+  Snd('A),
+  Jgz('F, -16),
+  Jgz('A, -19)
+)
+
+case class State(registers: Map[Symbol, Long],
+                 instructions: IndexedSeq[Instruction],
+                 pc: Int,
+                 lastFreq: Long) {
+
+  def valueOf(ref: Ref) = ref match {
+    case Literal (x) ⇒ x
+    case Register(r) ⇒ registers(r)
+  }
+
+  def play(freq: Long) = copy(lastFreq = freq, pc = pc + 1)
+  def reg(c: Symbol)(f: Long ⇒ Long) = copy(registers = registers.updated(c, f(registers(c))), pc = pc + 1)
+
+  val isDone = !(0 <= pc && pc < instructions.length)
+  def current = instructions(pc)
+  def next = current match {
+    case Snd(x)     ⇒ play(valueOf(x))
+    case Set(r, y)  ⇒ reg(r) { _ ⇒ valueOf(y) }
+    case Add(r, y)  ⇒ reg(r) { _ + valueOf(y) }
+    case Mul(r, y)  ⇒ reg(r) { _ * valueOf(y) }
+    case Mod(r, y)  ⇒ reg(r) { n ⇒ ((n % valueOf(y)) + valueOf(y)) % valueOf(y) }
+    case Rcv(x)     ⇒ copy(pc = pc + 1)
+    case Jgz(x, offset)  ⇒
+      val d = if (valueOf(x) > 0) valueOf(offset) else 1
+      copy(pc = pc + d.toInt)
+  }
+
+  override def toString = {
+    val rs = registers.toSeq
+      .filter { case (k, v) ⇒ v != 0 }
+      .sortBy { case (k, v) ⇒ k.name }
+      .map    { case (k, v) ⇒ s"${k.name}:$v" }
+      .mkString("\t")
+    s"State(pc=$pc [$current], last=$lastFreq,\t$rs)"
+  }
+}
+object State {
+  val initial = State(Map.empty withDefaultValue 0L, input, 0, 0L)
 }
 
-//var s = initialState
-//for (i ← Stream from 0 take 1000) {
-//  if (i > 95) println(s"[$i] ${showState(s)}")
-//  s = s.next.get
-//}
-
-Stream.iterate(Option(initialState)) { _.flatMap(_.next) }
-  .takeWhile(_.isDefined)
-  .filter { s ⇒ s.exists(_.currentInstruction.exists(_.startsWith("rcv"))) }
-  .take(10)
+Stream.iterate(State.initial)(_.next)
+  .takeWhile(!_.isDone)
+  .filter(s => s.current.isInstanceOf[Rcv] || s.current.isInstanceOf[Snd])
+  .take(1000)
   .toList foreach println
 

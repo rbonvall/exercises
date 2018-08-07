@@ -67,6 +67,9 @@ case class CPU(registers: Map[Symbol, Int], pc: Int, instructions: Seq[Instructi
       val offset = if (valueOf(cond) == 0) 1 else valueOf(ref)
       copy(pc = pc + offset)
   }
+  def regState =
+    "ABCDEFGH".map { c ⇒ registers(Symbol(c.toString)) }
+      .mkString("\t")
 }
 object CPU {
   val initial   = CPU(Map.empty[Symbol, Int] withDefaultValue 0, 0, program)
@@ -82,4 +85,12 @@ println(
       case Mul(_, _) ⇒ true
       case _         ⇒ false
     }
+)
+
+// Part 2
+println(
+  Iterator.iterate(CPU.debugMode)(_.execute)
+    .find(_.isDone)
+    .map(_.registers('h))
+    .get
 )

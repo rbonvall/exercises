@@ -5,14 +5,26 @@ val jumps = """
   """.trim.split("""\s+""").map(_.toInt).toVector
 
 case class State(pos: Int, jumps: Seq[Int]) {
+
   def next =
     State(pos + jumps(pos), jumps.updated(pos, jumps(pos) + 1))
+
   def strangeNext = {
     val delta = if (jumps(pos) < 3) 1 else -1
     State(pos + jumps(pos), jumps.updated(pos, jumps(pos) + delta))
   }
+
   def valid = 0 <= pos && pos < jumps.length
-  override def toString = s"State(" ++ jumps.map(_.toString).zipWithIndex.map { case (j, n) ⇒ if (n == pos) s"($j)" else s" $j " }.mkString ++ ")"
+
+  override def toString =
+    jumps
+      .map(_.toString)
+      .zipWithIndex
+      .map {
+        case (j, `pos`) ⇒ s"($j)"
+        case (j, n)     ⇒ s" $j "
+      }
+      .mkString("State(", "", ")")
 }
 
 val example = State(0, Vector(0, 3, 0, 1, -3))

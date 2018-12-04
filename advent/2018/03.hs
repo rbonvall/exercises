@@ -1,12 +1,17 @@
-import Data.List (group, sort)
+import qualified Data.Map as Map
+import Data.List (group, sort, find)
+import Data.Ord (comparing)
+import Data.Function (on)
 import System.IO
 
-data Claim = Claim { id     :: Int
+data Claim = Claim { cId    :: Int
                    , left   :: Int
                    , top    :: Int
                    , width  :: Int
                    , height :: Int
                    } deriving Show
+
+example = map parseClaim ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2"]
 
 parseClaim :: String -> Claim
 parseClaim line =
@@ -29,7 +34,15 @@ claimSquares (Claim _ l t w h) =
 part1 = length . filter repeated . group . sort . concatMap claimSquares
   where repeated xs = length xs > 1
 
-part2 claims = ""
+part2 claims =
+  let allSquares = concatMap claimSquares claims
+      groupedSquares = group $ sort allSquares
+      squareOccupancy = Map.fromAscList $ map groupOccupancy $ groupedSquares
+  in find (nonOverlappedBy squareOccupancy) claims
+  where
+    groupOccupancy groupCells = (head groupCells, length groupCells)
+    isOneIn map x = any (== 1) $ Map.lookup x map
+    nonOverlappedBy occ claim = all (isOneIn occ) $ claimSquares claim
 
 main = do
   handle <- openFile "03.txt" ReadMode

@@ -1,0 +1,12 @@
+#lang pie
+
+; The Four Forms of Judgement
+; 1. ___ is a ___.
+; 2. ___ is the same ___ as ___.
+; 3. ___ is a type.
+; 4. ___ and ___ are the same type.
+
+
+(display (Pair Atom Atom) )
+
+;; vim: set ft=racket:

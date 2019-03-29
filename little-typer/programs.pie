@@ -6,7 +6,16 @@
 ; 3. ___ is a type.
 ; 4. ___ and ___ are the same type.
 
+(claim más (-> Nat Nat Nat))
+(define más
+  (λ (n j)
+    (iter-Nat n
+      j
+      (λ (x) (add1 x)))))
+; why doesn't it work with just add1 as the second argument?
 
-(display (Pair Atom Atom) )
+(más 3 2) ; -> (the Nat 5)
+
+
 
 ;; vim: set ft=racket:

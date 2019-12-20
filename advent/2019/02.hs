@@ -7,12 +7,14 @@ data State = State Int (Seq Int) deriving Show
 example :: Seq Int
 example = fromList [1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50]
 
+sx = State 0 example
+
 next :: State -> Maybe State
 next (State pos ops) =
-  let w = ops `index` pos
-      x = ops `index` (ops `index` (pos + 1))
-      y = ops `index` (ops `index` (pos + 2))
-      z = ops `index` (ops `index` (pos + 3))
+  let w = index ops pos
+      x = index ops $ index ops (pos + 1)
+      y = index ops $ index ops (pos + 2)
+      z = index ops (pos + 3)
   in execute ops w x y z
   where 
     execute ops  1 x y z = Just (State (pos + 4) (update z (x + y) ops))

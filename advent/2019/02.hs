@@ -1,6 +1,7 @@
 import System.IO
 import Data.Sequence (Seq, index, update, fromList)
 import Data.Maybe (isJust)
+import Data.List (find)
 
 data State = State Int (Seq Int) deriving Show
 
@@ -21,17 +22,26 @@ next (State pos ops) =
     execute ops  2 x y z = Just (State (pos + 4) (update z (x * y) ops))
     execute ops 99 _ _ _ = Nothing
 
-part1 ops =
-  let restoredOps = (update 1 12 . update 2 2) ops
+process :: Int -> Int -> Seq Int -> Int
+process noun verb ops =
+  let restoredOps = (update 1 noun . update 2 verb) ops
       s0 = State 0 restoredOps
       ss = takeWhile isJust $ iterate (next =<<) (Just s0)
       sf = last $ takeWhile isJust ss
   in valueInPositionZero sf
   where valueInPositionZero (Just (State _ ops)) = index ops 0
 
+part1 = process 12 2
+
+part2 ops =
+  let pairs = [ (noun, verb) | noun <- [0..99], verb <- [0..99] ]
+      mappings = map tabulate pairs
+  in fmap fst $ find ((==19690720) . snd) mappings
+  where tabulate (n, v) = (100 * n + v, process n v ops)  
+
 main = do
-  handle <- openFile "02.txt" ReadMode
-  contents <- hGetContents handle
+  contents <- readFile "02.txt"
   let opList = read ("[" ++ contents ++ "]") :: [Int]
-  print $ part1 (fromList opList)
-  hClose handle
+  let opSeq = fromList opList
+  print $ part1 opSeq
+  print $ part2 opSeq

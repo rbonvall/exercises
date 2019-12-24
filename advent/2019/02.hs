@@ -24,11 +24,10 @@ next (State pos ops) =
 
 process :: Int -> Int -> Seq Int -> Int
 process noun verb ops =
-  let restoredOps = (update 1 noun . update 2 verb) ops
-      s0 = State 0 restoredOps
+  let withInput = (update 1 noun . update 2 verb) ops
+      s0 = State 0 withInput
       ss = takeWhile isJust $ iterate (next =<<) (Just s0)
-      sf = last $ takeWhile isJust ss
-  in valueInPositionZero sf
+  in valueInPositionZero $ last ss
   where valueInPositionZero (Just (State _ ops)) = index ops 0
 
 part1 = process 12 2
@@ -37,7 +36,7 @@ part2 ops =
   let pairs = [ (noun, verb) | noun <- [0..99], verb <- [0..99] ]
       mappings = map tabulate pairs
   in fmap fst $ find ((==19690720) . snd) mappings
-  where tabulate (n, v) = (100 * n + v, process n v ops)  
+  where tabulate (n, v) = (100 * n + v, process n v ops)
 
 main = do
   contents <- readFile "02.txt"

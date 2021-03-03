@@ -72,12 +72,12 @@ class TermSpec extends FunSpec {
       assert(newVariable(List('b, 'a, 'x, 'z, 'y)) === 'c)
     }
     it("returns uppercase names when it runs out of lowercase names") {
-      val all = ('a' to 'z').map { c ⇒ Symbol(c.toString) }.toList
+      val all = ('a' to 'z').map { c => Symbol(c.toString) }.toList
       assert(newVariable(all) === 'X)
       assert(newVariable('X :: all) === 'Y)
     }
     it("returns indexed variables when it runs out of letters") {
-      val all = (('a' to 'z') ++ ('A' to 'Z')).map { c ⇒ Symbol(c.toString) }.toList
+      val all = (('a' to 'z') ++ ('A' to 'Z')).map { c => Symbol(c.toString) }.toList
       assert(newVariable(all) === 'x1)
       assert(newVariable('x1 :: all) === 'x2)
     }

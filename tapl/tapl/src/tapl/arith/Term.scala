@@ -23,7 +23,7 @@ object Term {
       (for { t1 ← s ; t2 ← s ; t3 ← s } yield Cond(t1, t2, t3))
     }
 
-  val terms: Stream[Term] = Stream.from(0).flatMap(S).distinct
+  val terms: LazyList[Term] = LazyList.from(0).flatMap(S).distinct
 
   def consts(t: Term): Set[Term] = t match {
     case c @ (True | False | Zero) ⇒ Set(c)

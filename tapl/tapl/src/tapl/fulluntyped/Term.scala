@@ -62,12 +62,12 @@ object NamelessTerm {
   def newVariable(Γ: List[Symbol]): Symbol =
     varNames.find { n ⇒ !Γ.contains(n) }.get
 
-  private val allLetters = (('x' to 'z') ++ ('a' to 'w')).toStream
+  private val allLetters = (('x' to 'z') ++ ('a' to 'w')).to(LazyList)
   private def sym(c: Char) = Symbol(c.toString)
-  val varNames: Stream[Symbol] = Stream(
+  val varNames: LazyList[Symbol] = LazyList(
     allLetters.map(sym),
     allLetters.map(_.toUpper).map(sym),
-    Stream.from(1).map { i ⇒ Symbol(s"x$i") }
+    LazyList.from(1).map { i ⇒ Symbol(s"x$i") }
   ).flatten
 
   /** Returns the d-place shift of a nameless term above cutoff c. */

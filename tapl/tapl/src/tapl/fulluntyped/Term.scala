@@ -14,16 +14,16 @@ object Term:
 
   /** Syntactic sugar for lambda abstractions. */
   def λ(x: Symbol, xs: Symbol*)(body: Term) =
-    Term.Abs(x, xs.foldRight (body) { (x, acc) => Term.Abs(x, acc) })
+    Abs(x, xs.foldRight (body) { (x, acc) => Abs(x, acc) })
 
   implicit def symToVar(x: Symbol): Var = Var(x)
 
   def subst(x: Symbol, s: Term)(t: Term): Term =
     t match
-      case     Term.Var(y) if y == x => s
-      case v @ Term.Var(_)           => v
-      case Term.App(t1, t2) => subst(x, s)(t1) $ subst(x, s)(t2)
-      case Term.Abs(Term.Var(v), t) => λ(v) { subst(x, s)(t) }
+      case     Var(y) if y == x => s
+      case v @ Var(_)           => v
+      case     App(t1, t2) => subst(x, s)(t1) $ subst(x, s)(t2)
+      case     Abs(Term.Var(v), t) => λ(v) { subst(x, s)(t) }
 
 
 /** Nameless lambda term (uses de Bruĳn indices for variables). */
@@ -42,16 +42,16 @@ object NamelessTerm:
   /** [Exercise 6.1.5-1] */
   def removeNames(Γ: List[Symbol], t: Term): NamelessTerm =
     t match
-      case Term.Var(x)              => NamelessTerm.Index(Γ indexOf x)
-      case Term.Abs(Term.Var(x), t) => NamelessTerm.NAbs(removeNames(x :: Γ, t))
-      case Term.App(f, t)           => NamelessTerm.NApp(removeNames(Γ, f), removeNames(Γ, t))
+      case Term.Var(x)              => Index(Γ indexOf x)
+      case Term.Abs(Term.Var(x), t) => NAbs(removeNames(x :: Γ, t))
+      case Term.App(f, t)           => NApp(removeNames(Γ, f), removeNames(Γ, t))
 
   /** [Exercise 6.1.5-2] */
   def restoreNames(Γ: List[Symbol], nt: NamelessTerm): Term =
     nt match
-      case NamelessTerm.Index(i)   => Term.Var(Γ(i))
-      case NamelessTerm.NApp(f, t) => Term.App(restoreNames(Γ, f), restoreNames(Γ, t))
-      case NamelessTerm.NAbs(t) =>
+      case Index(i)   => Term.Var(Γ(i))
+      case NApp(f, t) => Term.App(restoreNames(Γ, f), restoreNames(Γ, t))
+      case NAbs(t) =>
         val x = newVariable(Γ)
         Term.Abs(x, restoreNames(x :: Γ, t))
 

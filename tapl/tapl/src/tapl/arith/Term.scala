@@ -7,9 +7,9 @@ enum Term:
   case Succ  (t: Term)
   case Pred  (t: Term)
   case IsZero(t: Term)
-  case Cond( `if`: Term
-           , `then`: Term
-           , `else`: Term)
+  case Cond( `if`: Term,
+             `then`: Term,
+             `else`: Term)
 
 object Term:
 

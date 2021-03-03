@@ -6,19 +6,19 @@ import scala.language.implicitConversions
 /** Ordinary lambda term (with named variables). */
 enum Term:
   def $(t: Term) = App(this, t)
-  case Var(name: Symbol)
+  case Var(name: String)
   case Abs(v: Var, body: Term)
   case App(f: Term, arg: Term)
 
 object Term:
 
   /** Syntactic sugar for lambda abstractions. */
-  def λ(x: Symbol, xs: Symbol*)(body: Term) =
+  def λ(x: String, xs: String*)(body: Term) =
     Abs(x, xs.foldRight (body) { (x, acc) => Abs(x, acc) })
 
-  implicit def symToVar(x: Symbol): Var = Var(x)
+  implicit def strToVar(x: String): Var = Var(x)
 
-  def subst(x: Symbol, s: Term)(t: Term): Term =
+  def subst(x: String, s: Term)(t: Term): Term =
     t match
       case     Var(y) if y == x => s
       case v @ Var(_)           => v
@@ -40,14 +40,14 @@ object NamelessTerm:
   implicit def intToIndex(i: Int): Index = Index(i)
 
   /** [Exercise 6.1.5-1] */
-  def removeNames(Γ: List[Symbol], t: Term): NamelessTerm =
+  def removeNames(Γ: List[String], t: Term): NamelessTerm =
     t match
       case Term.Var(x)              => Index(Γ indexOf x)
       case Term.Abs(Term.Var(x), t) => NAbs(removeNames(x :: Γ, t))
       case Term.App(f, t)           => NApp(removeNames(Γ, f), removeNames(Γ, t))
 
   /** [Exercise 6.1.5-2] */
-  def restoreNames(Γ: List[Symbol], nt: NamelessTerm): Term =
+  def restoreNames(Γ: List[String], nt: NamelessTerm): Term =
     nt match
       case Index(i)   => Term.Var(Γ(i))
       case NApp(f, t) => Term.App(restoreNames(Γ, f), restoreNames(Γ, t))
@@ -56,15 +56,14 @@ object NamelessTerm:
         Term.Abs(x, restoreNames(x :: Γ, t))
 
   /** Returns a variable name that is not in the naming context. */
-  def newVariable(Γ: List[Symbol]): Symbol =
+  def newVariable(Γ: List[String]): String =
     varNames.find { n => !Γ.contains(n) }.get
 
   private val allLetters = (('x' to 'z') ++ ('a' to 'w')).to(LazyList)
-  private def sym(c: Char) = Symbol(c.toString)
-  val varNames: LazyList[Symbol] = LazyList(
-    allLetters.map(sym),
-    allLetters.map(_.toUpper).map(sym),
-    LazyList.from(1).map { i => Symbol(s"x$i") }
+  val varNames: LazyList[String] = LazyList(
+    allLetters.map(_.toString),
+    allLetters.map(_.toUpper).map(_.toString),
+    LazyList.from(1).map { i => s"x$i" }
   ).flatten
 
   /** Returns the d-place shift of a nameless term above cutoff c. */

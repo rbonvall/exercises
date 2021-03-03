@@ -10,13 +10,15 @@ enum Term:
   case Abs(v: Var, body: Term)
   case App(f: Term, arg: Term)
 
+
 object Term:
+
+  given Conversion[String, Var] with
+    def apply(s: String): Var = Var(s)
 
   /** Syntactic sugar for lambda abstractions. */
   def λ(x: String, xs: String*)(body: Term) =
     Abs(x, xs.foldRight (body) { (x, acc) => Abs(x, acc) })
-
-  implicit def strToVar(x: String): Var = Var(x)
 
   def subst(x: String, s: Term)(t: Term): Term =
     t match
@@ -35,9 +37,11 @@ enum NamelessTerm :
 
 object NamelessTerm:
 
+  given Conversion[Int, NamelessTerm] with
+    def apply(i: Int): NamelessTerm = Index(i)
+
   /** Syntactic sugar for nameless lambda abstractions. */
   def λĳ(body: NamelessTerm) = NAbs(body)
-  implicit def intToIndex(i: Int): Index = Index(i)
 
   /** [Exercise 6.1.5-1] */
   def removeNames(Γ: List[String], t: Term): NamelessTerm =

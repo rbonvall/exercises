@@ -3,12 +3,11 @@ import scalalib._
 
 object tapl extends ScalaModule {
 
-  def scalaVersion = "2.12.4"
+  def scalaVersion = "3.0.0-RC1"
   def scalacOptions = Seq(
     "-deprecation",
     "-unchecked",
     "-feature",
-    "-Xfuture",
     "-Xfatal-warnings"
   )
 

@@ -11,60 +11,53 @@ enum Term:
            , `then`: Term
            , `else`: Term)
 
-object Term {
-  import Term.*
+object Term:
 
   def S(i: Int): Set[Term] =
     if (i == 0) Set.empty
-    else {
+    else
       val s = S(i - 1)
       Set(True, False, Zero) ++
       (for { t1 <- s } yield Succ(t1)) ++
       (for { t1 <- s } yield Pred(t1)) ++
       (for { t1 <- s } yield IsZero(t1)) ++
       (for { t1 <- s ; t2 <- s ; t3 <- s } yield Cond(t1, t2, t3))
-    }
 
   val terms: LazyList[Term] = LazyList.from(0).flatMap(S).distinct
 
-  def consts(t: Term): Set[Term] = t match {
+  def consts(t: Term): Set[Term] = t match
     case c @ (True | False | Zero) => Set(c)
     case Succ(t)       => consts(t)
     case Pred(t)       => consts(t)
     case IsZero(t)     => consts(t)
     case Cond(t, u, v) => consts(t) ++ consts(u) ++ consts(v)
-  }
 
-  def size(t: Term): Int = t match {
+  def size(t: Term): Int = t match
     case True | False | Zero => 1
     case Succ(t)       => size(t) + 1
     case Pred(t)       => size(t) + 1
     case IsZero(t)     => size(t) + 1
     case Cond(t, u, v) => size(t) + size(u) + size(v) + 1
-  }
 
-  def depth(t: Term): Int = t match {
+  def depth(t: Term): Int = t match
     case True | False | Zero => 1
     case Succ(t)       => depth(t) + 1
     case Pred(t)       => depth(t) + 1
     case IsZero(t)     => depth(t) + 1
     case Cond(t, u, v) => List(depth(t), depth(u), depth(v)).max + 1
-  }
 
-  def isNumerical(t: Term): Boolean = t match {
+  def isNumerical(t: Term): Boolean = t match
     case Zero    => true
     case Succ(t) => isNumerical(t)
     case _       => false
-  }
 
-  def isVal(t: Term): Boolean = t match {
+  def isVal(t: Term): Boolean = t match
     case True | False => true
     case t            => isNumerical(t)
-  }
 
   case object NoRuleApplies extends Exception
 
-  def eval1(t: Term): Term = t match {
+  def eval1(t: Term): Term = t match
     case Cond(True,  t2, t3) => t2
     case Cond(False, t2, t3) => t3
     case Cond(t1,    t2, t3) => Cond(eval1(t1), t2, t3)
@@ -80,15 +73,11 @@ object Term {
     case IsZero(t1)                            => IsZero(eval1(t1))
 
     case _ => throw NoRuleApplies
-  }
 
-  def eval(t: Term): Term = try {
-    val result = eval1(t)
-    eval(result)
-  } catch {
-    case NoRuleApplies => t
-  }
-
-
-}
+  def eval(t: Term): Term =
+    try
+      val result = eval1(t)
+      eval(result)
+    catch
+      case NoRuleApplies => t
 

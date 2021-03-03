@@ -1,16 +1,18 @@
 package tapl.arith
 
-sealed trait Term
+enum Term:
+  case True
+  case False
+  case Zero
+  case Succ  (t: Term)
+  case Pred  (t: Term)
+  case IsZero(t: Term)
+  case Cond( `if`: Term
+           , `then`: Term
+           , `else`: Term)
+
 object Term {
-  case object True            extends Term
-  case object False           extends Term
-  case object Zero            extends Term
-  case class  Succ  (t: Term) extends Term
-  case class  Pred  (t: Term) extends Term
-  case class  IsZero(t: Term) extends Term
-  case class  Cond( `if`: Term
-                  , `then`: Term
-                  , `else`: Term) extends Term
+  import Term.*
 
   def S(i: Int): Set[Term] =
     if (i == 0) Set.empty

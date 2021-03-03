@@ -4,38 +4,40 @@ import scala.language.implicitConversions
 
 
 /** Ordinary lambda term (with named variables). */
-sealed trait Term {
+enum Term:
   def $(t: Term) = App(this, t)
-}
-case class Var(name: Symbol)       extends Term
-case class Abs(v: Var, body: Term) extends Term
-case class App(f: Term, arg: Term) extends Term
+  case Var(name: Symbol)
+  case Abs(v: Var, body: Term)
+  case App(f: Term, arg: Term)
 
 object Term {
+
   /** Syntactic sugar for lambda abstractions. */
   def λ(x: Symbol, xs: Symbol*)(body: Term) =
-    Abs(x, xs.foldRight (body) { (x, acc) => Abs(x, acc) })
+    Term.Abs(x, xs.foldRight (body) { (x, acc) => Term.Abs(x, acc) })
+
   implicit def symToVar(x: Symbol): Var = Var(x)
 
   def subst(x: Symbol, s: Term)(t: Term): Term =
     t match {
-      case     Var(y) if y == x => s
-      case v @ Var(_)           => v
-      case App(t1, t2) => subst(x, s)(t1) $ subst(x, s)(t2)
-      case Abs(Var(v), t) => λ(v) { subst(x, s)(t) }
+      case     Term.Var(y) if y == x => s
+      case v @ Term.Var(_)           => v
+      case Term.App(t1, t2) => subst(x, s)(t1) $ subst(x, s)(t2)
+      case Term.Abs(Term.Var(v), t) => λ(v) { subst(x, s)(t) }
     }
 }
 
 
 /** Nameless lambda term (uses de Bruĳn indices for variables). */
-sealed trait NamelessTerm {
+enum NamelessTerm :
   def $(t: NamelessTerm) = NApp(this, t)
-}
-case class Index(i: Int) extends NamelessTerm
-case class NAbs(body: NamelessTerm) extends NamelessTerm
-case class NApp(fn: NamelessTerm, arg: NamelessTerm) extends NamelessTerm
+  case Index(i: Int)
+  case NAbs(body: NamelessTerm)
+  case NApp(fn: NamelessTerm, arg: NamelessTerm)
 
 object NamelessTerm {
+  import NamelessTerm.{Index, NAbs, NApp}
+
   /** Syntactic sugar for nameless lambda abstractions. */
   def λĳ(body: NamelessTerm) = NAbs(body)
   implicit def intToIndex(i: Int): Index = Index(i)
@@ -43,19 +45,19 @@ object NamelessTerm {
   /** [Exercise 6.1.5-1] */
   def removeNames(Γ: List[Symbol], t: Term): NamelessTerm =
     t match {
-      case Var(x)         => Index(Γ indexOf x)
-      case Abs(Var(x), t) => NAbs(removeNames(x :: Γ, t))
-      case App(f, t)      => NApp(removeNames(Γ, f), removeNames(Γ, t))
+      case Term.Var(x)              => NamelessTerm.Index(Γ indexOf x)
+      case Term.Abs(Term.Var(x), t) => NamelessTerm.NAbs(removeNames(x :: Γ, t))
+      case Term.App(f, t)           => NamelessTerm.NApp(removeNames(Γ, f), removeNames(Γ, t))
     }
 
   /** [Exercise 6.1.5-2] */
   def restoreNames(Γ: List[Symbol], nt: NamelessTerm): Term =
     nt match {
-      case Index(i)   => Var(Γ(i))
-      case NApp(f, t) => App(restoreNames(Γ, f), restoreNames(Γ, t))
-      case NAbs(t) =>
+      case NamelessTerm.Index(i)   => Term.Var(Γ(i))
+      case NamelessTerm.NApp(f, t) => Term.App(restoreNames(Γ, f), restoreNames(Γ, t))
+      case NamelessTerm.NAbs(t) =>
         val x = newVariable(Γ)
-        Abs(x, restoreNames(x :: Γ, t))
+        Term.Abs(x, restoreNames(x :: Γ, t))
     }
 
   /** Returns a variable name that is not in the naming context. */

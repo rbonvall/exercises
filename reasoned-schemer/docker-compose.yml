@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    reason:
+        build: .
+        volumes:
+            - '.:/root/reasoned-schemer'
+        command: racket /root/reasoned-schemer/tests.rkt
+

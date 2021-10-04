@@ -1,5 +1,4 @@
-FROM racket/racket:7.7
-RUN raco pkg install --deps force rackunit
+FROM racket/racket:7.7-full
 RUN raco pkg install --deps force minikanren
 WORKDIR /root/reasoned-schemer
 COPY *.rkt ./

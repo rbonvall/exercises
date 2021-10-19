@@ -1,6 +1,7 @@
 #lang racket
 
 (require minikanren)
+(require "programs.rkt")
 (require (except-in rackunit fail))
 
 (test-case "Chapter 1"
@@ -85,5 +86,23 @@
                   (fresh (x)
                     (fresh (y)
                       (== `(,x ,y ,x) q)))) '((_.0 _.1 _.0)))
+
+  (check-equal? (run* (q) (conj2 succeed      succeed))      '(_.0))
+  (check-equal? (run* (q) (conj2 succeed      (== 'corn q))) '(corn))
+  (check-equal? (run* (q) (conj2 fail         (== 'corn q))) '())
+  (check-equal? (run* (q) (conj2 (== 'corn q) (== 'meal q))) '())
+  (check-equal? (run* (q) (conj2 (== 'corn q) (== 'corn q))) '(corn))
+
+  (check-equal? (run* (q) (disj2 fail          fail))        '())
+  (check-equal? (run* (q) (disj2 (== 'olive q) fail))        '(olive))
+  (check-equal? (run* (q) (disj2 fail          (== 'oil q))) '(oil))
+  (check-equal? (run* (q) (disj2 (== 'olive q) (== 'oil q))) '(olive oil))
+
+  (check-equal? (run* (q)
+                  (fresh (x)
+                    (fresh (y)
+                      (disj2
+                        (== `(,x ,y) q)
+                        (== `(,y ,x) q))))) '((_.0 _.1) (_.0 _.1)))
 
 )

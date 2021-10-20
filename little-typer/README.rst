@@ -1,6 +1,9 @@
 Examples and exercises from `The Little Typer`_.
 
-Code is written in Pie_, a Racket_ dialect.
+Code is written in Pie_, a Racket_ dialect,
+and can be executed using Docker Compose::
+
+    $ docker-compose up
 
 .. image:: cover.jpg
 

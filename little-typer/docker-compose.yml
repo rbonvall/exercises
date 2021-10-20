@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    typer:
+        build: .
+        volumes:
+            - '.:/root/little-typer'
+        command: racket /root/little-typer/programs.pie
+

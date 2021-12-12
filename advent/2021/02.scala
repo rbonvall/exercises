@@ -33,8 +33,20 @@ def part1(cmds: List[Command]) =
   val finalState = cmds.foldLeft(State.initial)(_ update _)
   finalState.product
 
-def part2(depths: List[Command]) =
-  ()
+case class StateWithAim(hPos: Int, depth: Int, aim: Int):
+  def update(cmd: Command): StateWithAim =
+    cmd match
+      case Command(Forward, x) => StateWithAim(hPos + x, depth + aim * x, aim)
+      case Command(Down,    x) => StateWithAim(hPos, depth, aim + x)
+      case Command(Up,      x) => StateWithAim(hPos, depth, aim - x)
+  def product = hPos * depth
+
+object StateWithAim:
+  val initial = StateWithAim(0, 0, 0)
+
+def part2(cmds: List[Command]) =
+  val finalState = cmds.foldLeft(StateWithAim.initial)(_ update _)
+  finalState.product
 
 @main
 def run =

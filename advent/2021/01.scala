@@ -1,14 +1,19 @@
 import scala.io.Source
 import java.io.File
 
+extension (values: List[Int])
+  def derive = (values.tail zip values.init).map(_ - _)
 
-def problem1(depths: List[Int]) =
-  (depths.tail zip depths.init)
-    .map(_ - _)
+def part1(depths: List[Int]) =
+  depths.derive
     .count(_ > 0)
 
-def problem2(depths: List[Int]) =
-  ()
+def part2(depths: List[Int]) =
+  depths.sliding(3)
+    .map(_.sum)
+    .toList
+    .derive
+    .count(_ > 0)
 
 @main
 def run =
@@ -17,5 +22,5 @@ def run =
     try src.getLines.map(_.toInt).toList
     finally src.close()
 
-  println(problem1(input))
-  println(problem2(input))
+  println(part1(input))
+  println(part2(input))

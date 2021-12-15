@@ -1,9 +1,14 @@
-def stepTimer(timer: Int): List[Int] =
-  if timer == 0 then List(6, 8)
-  else               List(timer - 1)
-
 def part1(initialTimers: List[Int]) =
-  LazyList.iterate(initialTimers)(_.flatMap(stepTimer))(80).length
+  Iterator
+    .iterate(initialTimers) { timers =>
+      timers.flatMap {
+        case 0 => List(6, 8)
+        case t => List(t - 1)
+      }
+    }
+    .drop(80)
+    .next
+    .length
 
 def part2(timers: List[Int]) =
   ()

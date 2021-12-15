@@ -10,8 +10,30 @@ def part1(initialTimers: List[Int]) =
     .next
     .length
 
-def part2(timers: List[Int]) =
-  ()
+def stepTimerCount(timerCount: Map[Int, Long]): Map[Int, Long] =
+  Map(
+    0 -> timerCount(1),
+    1 -> timerCount(2),
+    2 -> timerCount(3),
+    3 -> timerCount(4),
+    4 -> timerCount(5),
+    5 -> timerCount(6),
+    6 -> (timerCount(7) + timerCount(0)),
+    7 -> timerCount(8),
+    8 -> timerCount(0),
+  )
+
+def part2(initialTimers: List[Int]) =
+  val initialTimerCount = initialTimers
+    .groupBy(identity)
+    .map { (k, v) => (k, v.length.toLong) }
+    .withDefaultValue(0L)
+  Iterator
+    .iterate(initialTimerCount)(stepTimerCount)
+    .drop(256)
+    .next
+    .values
+    .sum
 
 @main
 def run =

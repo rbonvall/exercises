@@ -1,12 +1,19 @@
 def part1(initialPositions: List[Int]) =
   (0 to initialPositions.max)
-    .map { t => 
+    .map { t =>
       initialPositions.map { n => (t - n).abs }.sum
     }
     .min
 
 def part2(initialPositions: List[Int]) =
-  ()
+  (0 to initialPositions.max)
+    .map { t =>
+      initialPositions.map { n =>
+        val d = (t - n).abs
+        (d * (d + 1)) / 2
+      }.sum
+    }
+    .min
 
 @main
 def run =

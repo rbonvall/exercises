@@ -13,11 +13,13 @@ object BoardState:
   def fromRows(rows: List[List[Int]]) =
     BoardState(rows.map(_.toSet) ++ rows.transpose.map(_.toSet), None)
 
-def part1(drawn: List[Int], initialGameState: List[BoardState]) =
-  val allGameStates: LazyList[List[BoardState]] = drawn
-    .to(LazyList)
-    .scanLeft(initialGameState) { (previousState, n) => previousState.map(_.draw(n)) }
-  val allBoardStates: LazyList[BoardState] = allGameStates.flatten
+def computeAllGameStates(drawn: List[Int], initialBoardStates: List[BoardState]): LazyList[List[BoardState]] =
+  drawn.to(LazyList).scanLeft(initialBoardStates) { (previousState, n) =>
+    previousState.map(_.draw(n))
+  }
+
+def part1(drawn: List[Int], boards: List[BoardState]) =
+  val allBoardStates: LazyList[BoardState] = computeAllGameStates(drawn, boards).flatten
   val scoreOpt =
     for
       winningBoard  <- allBoardStates.find(_.hasWon)
@@ -25,8 +27,19 @@ def part1(drawn: List[Int], initialGameState: List[BoardState]) =
     yield winningBoard.allUnmarked.sum * lastDrawnNum
   scoreOpt.getOrElse(-1)
 
-def part2(input: Any) =
-  ()
+def part2(drawn: List[Int], boards: List[BoardState]) =
+  val allGameStates: LazyList[List[BoardState]] = computeAllGameStates(drawn, boards)
+  val scoreOpt =
+    for
+      gameStateWithLoser <- allGameStates.find(_.count(!_.hasWon) == 1)
+      losingBoard        <- gameStateWithLoser.find(!_.hasWon)
+
+      // Replay the losingBoard to find its own winning state
+      losingBoardStates       =  computeAllGameStates(drawn, List(losingBoard)).flatten
+      losingBoardWinningState <- losingBoardStates.find(_.hasWon)
+      lastDrawnNum            <- losingBoardWinningState.lastDrawn
+    yield losingBoardWinningState.allUnmarked.sum * lastDrawnNum
+  scoreOpt.getOrElse(-1)
 
 @main
 def run =
@@ -46,4 +59,4 @@ def run =
   val initalBoardStates = boards.map(BoardState.fromRows)
 
   println(part1(drawn, initalBoardStates))
-  println(part2(boards))
+  println(part2(drawn, initalBoardStates))

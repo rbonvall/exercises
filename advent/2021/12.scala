@@ -1,24 +1,48 @@
-def traversePaths(caves: List[(String, String)], current: String, visited: Set[String]): List[List[String]] =
-  if current == "end"
-  then List(List(current))
-  else
-    val newVisited =
-      if current.charAt(0).isLower
-      then visited + current
-      else visited
-    caves
-      .collect {
-        case (`current`, dst) if !visited.contains(dst) => dst
-        case (dst, `current`) if !visited.contains(dst) => dst
-      }
-      .flatMap(dst => traversePaths(caves, dst, newVisited))
-      .map(path => current :: path)
+trait VisitLog:
+  def visit(s: String): VisitLog
+  def canVisit(s: String): Boolean
 
-def part1(caves: List[(String, String)]) =
-  traversePaths(caves, "start", Set.empty).length
+class CanVisitSmallCavesOnlyOnce(visited: Set[String]) extends VisitLog:
+  def visit(s: String) = CanVisitSmallCavesOnlyOnce(
+    if s.charAt(0).isLower
+    then visited + s
+    else visited
+  )
+  def canVisit(s: String) = !visited.contains(s)
 
-def part2(caves: List[(String, String)]) =
-  ()
+class CanVisitOneSmallCaveTwice(visited: Set[String], visitedTwice: Option[String]) extends VisitLog:
+  def visit(s: String) =
+    val isSmall = s.length == 1 && s.charAt(0).isLower
+    if      !isSmall                                     then this
+    else if !visited.contains(s)                         then CanVisitOneSmallCaveTwice(visited + s, visitedTwice)
+    else if  visited.contains(s) && visitedTwice.isEmpty then CanVisitOneSmallCaveTwice(visited,     Some(s))
+    else this
+  def canVisit(s: String) = s != "start" && (!visited.contains(s) || visitedTwice.isEmpty)
+
+
+def traversePaths(connections: List[(String, String)], visitLog: VisitLog): List[List[String]] =
+  def iter(current: String, log: VisitLog): List[List[String]] =
+    if current == "end" then List(List(current))
+    else
+      connections
+        .collect {
+          case (`current`, dst) if log.canVisit(dst) => dst
+          case (dst, `current`) if log.canVisit(dst) => dst
+        }
+        .flatMap(dst => iter(dst, log.visit(current)))
+        .map(path => current :: path)
+
+  import util.chaining.scalaUtilChainingOps
+  iter("start", visitLog)
+
+def part1(connections: List[(String, String)]) =
+  val emptyLog = CanVisitSmallCavesOnlyOnce(Set.empty)
+  traversePaths(connections, emptyLog).length
+
+def part2(connections: List[(String, String)]) =
+  val emptyLog = CanVisitOneSmallCaveTwice(Set.empty, None)
+  val paths = traversePaths(connections, emptyLog)
+  paths.length
 
 @main
 def run =
@@ -32,6 +56,18 @@ def run =
       }
       .toList
     finally src.close()
+
+  val example = List(
+    ("start", "A"),
+    ("start", "b"),
+    ("A", "c"),
+    ("A", "b"),
+    ("b", "d"),
+    ("A", "end"),
+    ("b", "end"),
+  )
+  assert(part1(example) == 10)
+  assert(part2(example) == 36)
 
   println(part1(input))
   println(part2(input))

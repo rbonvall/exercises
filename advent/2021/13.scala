@@ -33,7 +33,21 @@ def part1(input: Input) =
     .length
 
 def part2(input: Input) =
-  ()
+  val finalDots: Set[(Int, Int)] =
+    input.folds
+      .foldLeft(input.dots) { case (dots, (axis, pos)) =>
+        dots.map(foldDot(axis, pos)).distinct
+      }
+      .toSet
+  val xMax = finalDots.map(_._1).max
+  val yMax = finalDots.map(_._2).max
+  val matrix =
+    for y <- 0 to yMax yield
+      for x <- 0 to xMax yield
+        if finalDots contains (x, y)
+        then "#"
+        else " "
+  matrix.map(_.mkString).mkString("\n")
 
 @main
 def run =

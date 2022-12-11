@@ -78,9 +78,11 @@ countRoundInspectionsByMonkey roundStates =
   in  map monkeyItemsBeforeInspecting roundStatesWithIndex
     where monkeyItemsBeforeInspecting (KeepAwayState s, i) = length (s !! i)
 
+addAll ls = foldl (zipWith (+)) (map (const 0) ls) ls
+
 computeMonkeyBusiness rounds =
   let counts = map countRoundInspectionsByMonkey rounds
-      totalCountsPerMonkey = map sum $ transpose counts
+      totalCountsPerMonkey = addAll counts
       mostActiveMonkeys = take 2 $ reverse $ sort totalCountsPerMonkey
   in product $ map toInteger $ mostActiveMonkeys
 

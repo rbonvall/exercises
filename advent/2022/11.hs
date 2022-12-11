@@ -48,8 +48,9 @@ toBeThrownBy f (Monkey op test whenTrue whenFalse) item =
   in (w, monkeyToThrowTo)
 
 -- make the ith list empty
-emptyList i (l:ls) =
-  if i == 0 then []:ls else l:(emptyList (i - 1) ls)
+emptyList i lists =
+  let (before, after) = splitAt i lists
+  in before ++ [[]] ++ (drop 1 after)
 
 throwAll toThrow itemsPerMonkey =
   [ items ++ newItems

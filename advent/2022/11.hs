@@ -7,19 +7,19 @@ groups ls =
   let (firstGroup, rest) = break null ls
   in firstGroup : groups rest
 
-data Monkey = Monkey { operation :: Int -> Int
-                     , test      :: Int -> Bool
-                     , whenTrue  :: Int
-                     , whenFalse :: Int
+data Monkey = Monkey { operation :: Integer -> Integer
+                     , test      :: Integer -> Bool
+                     , whenTrue  :: Integer
+                     , whenFalse :: Integer
                      } deriving Show
 
 instance Num n => Show (n -> a) where show f = "<func>"
 
 data Sim = Sim { monkeys :: [Monkey]
-               , worryFunction :: Int -> Int
+               , worryFunction :: Integer -> Integer
                }
 
-parseMonkeyLines :: [String] -> (Monkey, [Int])
+parseMonkeyLines :: [String] -> (Monkey, [Integer])
 parseMonkeyLines [_, s, o, d, t, f] =
   let m = Monkey { operation = parseOp     o
                  , test      = parseTest   d
@@ -35,12 +35,12 @@ parseMonkeyLines [_, s, o, d, t, f] =
     parseAction a = read $ last $ words a
 
 compileFormula ["old", "*", "old"] = (^2)
-compileFormula ["old", "*", n    ] = (* (read n :: Int))
-compileFormula ["old", "+", n    ] = (+ (read n :: Int))
+compileFormula ["old", "*", n    ] = (* (read n :: Integer))
+compileFormula ["old", "+", n    ] = (+ (read n :: Integer))
 
 divisibleBy d n = n `mod` d == 0
 
-data KeepAwayState = KeepAwayState [[Int]] deriving Show
+data KeepAwayState = KeepAwayState [[Integer]] deriving Show
 
 toBeThrownBy f (Monkey op test whenTrue whenFalse) item =
   let w = f $ op item
@@ -93,13 +93,13 @@ solve simulationRules nrRounds initialState =
 
 
 part1 monkeys s0 = solve (Sim monkeys (`div` 3)) 20 s0
-part2 monkeys s0 = solve (Sim monkeys id)     10000 s0
+part2 monkeys s0 = solve (Sim monkeys id) 20 s0   -- 10000 s0
 
 example = [ (Monkey (*19) (divisibleBy 23) 2 3, [79, 98] )
           , (Monkey (+ 6) (divisibleBy 19) 2 0, [54, 65, 75, 74])
           , (Monkey (^ 2) (divisibleBy 13) 1 3, [79, 60, 97])
           , (Monkey (+ 3) (divisibleBy 17) 0 1, [74])
-          ] :: [(Monkey, [Int])]
+          ] :: [(Monkey, [Integer])]
 
 (exampleMonkeys, exampleItems) = unzip example
 exampleRounds1 = allRoundStates (Sim exampleMonkeys (`div` 3)) $ KeepAwayState exampleItems

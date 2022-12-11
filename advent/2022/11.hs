@@ -110,11 +110,11 @@ main = do
   let (monkeys, items) = unzip $ map parseMonkeyLines $ groups $ lines contents
   let state0 = KeepAwayState items
 
-  putStrLn "Example"
+  putStrLn $ "Example (" ++ (show (length exampleMonkeys)) ++ " monkeys)"
   print $ part1 exampleMonkeys $ KeepAwayState exampleItems
   print $ part2 exampleMonkeys $ KeepAwayState exampleItems
 
-  putStrLn "Problem"
+  putStrLn $ "Problem (" ++ (show (length monkeys)) ++ " monkeys)"
   print $ part1 monkeys state0
   print $ part2 monkeys state0
 
